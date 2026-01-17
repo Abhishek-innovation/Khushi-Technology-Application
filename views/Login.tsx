@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useApp } from '../App';
 import { UserRole, Theme, Language } from '../types';
 import { Shield, Eye, EyeOff, Moon, Sun, Building2, UserCircle, Mail, AlertCircle, KeyRound, ChevronRight, ArrowLeft } from 'lucide-react';
@@ -13,7 +13,7 @@ interface MockUser {
 }
 
 const Login: React.FC = () => {
-  const { setTheme, setLanguage, theme, language, setUser, t } = useApp();
+  const { setTheme, setLanguage, theme, language, setUser, t, isDark } = useApp();
   const [showPassword, setShowPassword] = useState(false);
   const [isAdminLogin, setIsAdminLogin] = useState(true);
   const [isRegistering, setIsRegistering] = useState(false);
@@ -93,7 +93,6 @@ const Login: React.FC = () => {
   };
 
   const finalizeLogin = (u: MockUser) => {
-    // This is the point of actual entry into the application
     setUser({
       id: u.username,
       name: u.adminName,
@@ -118,7 +117,6 @@ const Login: React.FC = () => {
   const handleOtpVerify = () => {
     const code = otp.join('');
     if (code.length === 6) {
-      // In a real app, verify 'code' against server. For demo, we accept 6 digits.
       if (currentUser) {
         finalizeLogin(currentUser);
       }
@@ -129,14 +127,16 @@ const Login: React.FC = () => {
 
   if (isVerifying2FA) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-[#0b141d] relative overflow-y-auto">
+      <div className={`min-h-screen flex items-center justify-center p-4 relative overflow-y-auto transition-colors duration-500 ${isDark ? 'bg-[#0b141d]' : 'bg-blue-700'}`}>
         {/* Background blobs for depth */}
         <div className="fixed top-0 left-0 w-full h-full overflow-hidden -z-10">
           <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-[#002366] rounded-full blur-[120px] opacity-20"></div>
           <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-[#FF8C00] rounded-full blur-[120px] opacity-20"></div>
         </div>
 
-        <div className="w-full max-w-md p-10 rounded-[3rem] bg-[#16222c] border border-white/10 shadow-2xl text-white animate-in zoom-in-95 duration-300">
+        <div className={`w-full max-w-md p-10 rounded-[3rem] border shadow-2xl animate-in zoom-in-95 duration-300 transition-colors ${
+          isDark ? 'bg-[#16222c] border-white/10 text-white' : 'bg-white border-white/20 text-[#002366]'
+        }`}>
           <div className="flex flex-col items-center text-center mb-10">
             <div className="w-20 h-20 bg-[#FF8C00] rounded-3xl flex items-center justify-center mb-6 shadow-xl shadow-orange-500/20">
               <KeyRound size={40} className="text-white" />
@@ -164,14 +164,16 @@ const Login: React.FC = () => {
                     document.getElementById(`otp-${i - 1}`)?.focus();
                   }
                 }}
-                className="w-full aspect-square bg-white/5 border-2 border-white/5 rounded-2xl text-center text-2xl font-black focus:border-[#FF8C00] focus:bg-white/10 outline-none transition-all shadow-inner" 
+                className={`w-full aspect-square border-2 rounded-2xl text-center text-2xl font-black focus:border-[#FF8C00] outline-none transition-all shadow-inner ${
+                  isDark ? 'bg-white/5 border-white/5 text-white focus:bg-white/10' : 'bg-gray-50 border-gray-100 text-[#002366] focus:bg-white'
+                }`} 
               />
             ))}
           </div>
 
           <button 
             onClick={handleOtpVerify} 
-            className="w-full py-5 bg-[#FF8C00] rounded-2xl font-black text-lg shadow-lg shadow-orange-500/30 active:scale-[0.98] transition-transform"
+            className="w-full py-5 bg-[#FF8C00] rounded-2xl font-black text-lg shadow-lg shadow-orange-500/30 active:scale-[0.98] transition-transform text-white"
           >
             {t('verify')}
           </button>
@@ -187,7 +189,7 @@ const Login: React.FC = () => {
               setIsVerifying2FA(false);
               setOtp(['', '', '', '', '', '']);
             }} 
-            className="w-full mt-10 text-xs font-black opacity-30 hover:opacity-100 transition-opacity uppercase tracking-widest flex items-center justify-center gap-2"
+            className={`w-full mt-10 text-xs font-black opacity-30 hover:opacity-100 transition-opacity uppercase tracking-widest flex items-center justify-center gap-2 ${isDark ? 'text-white' : 'text-[#002366]'}`}
           >
             <ArrowLeft size={14} /> {t('backToLogin')}
           </button>
@@ -197,15 +199,19 @@ const Login: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-[#0b141d] relative overflow-y-auto overflow-x-hidden">
+    <div className={`min-h-screen flex items-center justify-center p-4 relative overflow-y-auto overflow-x-hidden transition-colors duration-500 ${isDark ? 'bg-[#0b141d]' : 'bg-blue-800'}`}>
       {/* Dynamic Background */}
       <div className="fixed -top-24 -left-24 w-96 h-96 bg-[#002366] rounded-full blur-[120px] opacity-20 -z-10"></div>
       <div className="fixed -bottom-24 -right-24 w-96 h-96 bg-[#FF8C00] rounded-full blur-[120px] opacity-20 -z-10"></div>
       
-      <div className="relative w-full max-w-5xl grid md:grid-cols-2 rounded-[2.5rem] overflow-hidden border border-white/10 bg-slate-900/40 backdrop-blur-3xl shadow-2xl animate-in fade-in slide-in-from-bottom-10 duration-700">
+      <div className={`relative w-full max-w-5xl grid md:grid-cols-2 rounded-[2.5rem] overflow-hidden border shadow-2xl animate-in fade-in slide-in-from-bottom-10 duration-700 ${
+        isDark ? 'border-white/10 bg-slate-900/40 backdrop-blur-3xl' : 'border-white/20 bg-white/90 backdrop-blur-xl'
+      }`}>
         
         {/* Left Branding Side */}
-        <div className="hidden md:flex flex-col justify-between p-12 text-white bg-gradient-to-br from-[#002366] to-[#001c4d]">
+        <div className={`hidden md:flex flex-col justify-between p-12 text-white bg-gradient-to-br transition-colors duration-500 ${
+          isDark ? 'from-[#002366] to-[#001c4d]' : 'from-[#003399] to-[#002366]'
+        }`}>
           <div>
             <div className="mb-10 w-20 h-20 bg-[#FF8C00] rounded-3xl flex items-center justify-center shadow-2xl shadow-orange-500/30">
               <Shield size={40} />
@@ -222,15 +228,15 @@ const Login: React.FC = () => {
         </div>
 
         {/* Right Form Side */}
-        <div className="p-8 md:p-14 text-white">
+        <div className={`p-8 md:p-14 transition-colors duration-500 ${isDark ? 'text-white' : 'text-[#002366]'}`}>
           <div className="flex justify-between items-center mb-10">
-            <div className="flex bg-white/5 p-1 rounded-xl text-xs font-black border border-white/5">
-              <button onClick={() => setLanguage(Language.EN)} className={`px-4 py-2 rounded-lg transition-all ${language === Language.EN ? 'bg-white/10 text-white shadow-sm' : 'opacity-40 hover:opacity-100'}`}>EN</button>
-              <button onClick={() => setLanguage(Language.HI)} className={`px-4 py-2 rounded-lg transition-all ${language === Language.HI ? 'bg-white/10 text-white shadow-sm' : 'opacity-40 hover:opacity-100'}`}>हिंदी</button>
+            <div className={`flex p-1 rounded-xl text-xs font-black border transition-colors ${isDark ? 'bg-white/5 border-white/5' : 'bg-gray-100 border-gray-200'}`}>
+              <button onClick={() => setLanguage(Language.EN)} className={`px-4 py-2 rounded-lg transition-all ${language === Language.EN ? (isDark ? 'bg-white/10 text-white' : 'bg-white text-[#002366] shadow-sm') : 'opacity-40 hover:opacity-100'}`}>EN</button>
+              <button onClick={() => setLanguage(Language.HI)} className={`px-4 py-2 rounded-lg transition-all ${language === Language.HI ? (isDark ? 'bg-white/10 text-white' : 'bg-white text-[#002366] shadow-sm') : 'opacity-40 hover:opacity-100'}`}>हिंदी</button>
             </div>
             <button 
               onClick={() => setTheme(theme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT)} 
-              className="p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors"
+              className={`p-3 rounded-xl border transition-colors ${isDark ? 'bg-white/5 border-white/5 hover:bg-white/10 text-white' : 'bg-gray-100 border-gray-200 hover:bg-gray-200 text-[#002366]'}`}
             >
               {theme === Theme.LIGHT ? <Moon size={20} /> : <Sun size={20} />}
             </button>
@@ -263,7 +269,7 @@ const Login: React.FC = () => {
                       required 
                       value={orgName} 
                       onChange={e => setOrgName(e.target.value)} 
-                      className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/5 border-2 border-transparent focus:border-[#FF8C00] outline-none transition-all" 
+                      className={`w-full pl-12 pr-4 py-4 rounded-2xl border-2 border-transparent outline-none transition-all ${isDark ? 'bg-white/5 focus:border-[#FF8C00] text-white' : 'bg-gray-50 focus:border-[#FF8C00] text-[#002366]'}`} 
                       placeholder="e.g., Khushi Infra Ltd"
                     />
                   </div>
@@ -276,7 +282,7 @@ const Login: React.FC = () => {
                       required 
                       value={adminName} 
                       onChange={e => setAdminName(e.target.value)} 
-                      className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/5 border-2 border-transparent focus:border-[#FF8C00] outline-none transition-all" 
+                      className={`w-full pl-12 pr-4 py-4 rounded-2xl border-2 border-transparent outline-none transition-all ${isDark ? 'bg-white/5 focus:border-[#FF8C00] text-white' : 'bg-gray-50 focus:border-[#FF8C00] text-[#002366]'}`} 
                       placeholder="Super Admin Name"
                     />
                   </div>
@@ -290,7 +296,7 @@ const Login: React.FC = () => {
                       required 
                       value={email} 
                       onChange={e => setEmail(e.target.value)} 
-                      className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/5 border-2 border-transparent focus:border-[#FF8C00] outline-none transition-all" 
+                      className={`w-full pl-12 pr-4 py-4 rounded-2xl border-2 border-transparent outline-none transition-all ${isDark ? 'bg-white/5 focus:border-[#FF8C00] text-white' : 'bg-gray-50 focus:border-[#FF8C00] text-[#002366]'}`} 
                       placeholder="admin@gmail.com"
                     />
                   </div>
@@ -304,7 +310,7 @@ const Login: React.FC = () => {
                 required 
                 value={username} 
                 onChange={e => setUsername(e.target.value)} 
-                className="w-full px-5 py-4 rounded-2xl bg-white/5 border-2 border-transparent focus:border-[#FF8C00] outline-none transition-all" 
+                className={`w-full px-5 py-4 rounded-2xl border-2 border-transparent outline-none transition-all ${isDark ? 'bg-white/5 focus:border-[#FF8C00] text-white' : 'bg-gray-50 focus:border-[#FF8C00] text-[#002366]'}`} 
                 placeholder="Username"
               />
             </div>
@@ -317,7 +323,7 @@ const Login: React.FC = () => {
                   required 
                   value={password} 
                   onChange={e => setPassword(e.target.value)} 
-                  className="w-full px-5 py-4 rounded-2xl bg-white/5 border-2 border-transparent focus:border-[#FF8C00] outline-none transition-all" 
+                  className={`w-full px-5 py-4 rounded-2xl border-2 border-transparent outline-none transition-all ${isDark ? 'bg-white/5 focus:border-[#FF8C00] text-white' : 'bg-gray-50 focus:border-[#FF8C00] text-[#002366]'}`} 
                   placeholder="••••••••"
                 />
                 <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 opacity-30 hover:opacity-100">
@@ -326,7 +332,7 @@ const Login: React.FC = () => {
               </div>
             </div>
 
-            <button type="submit" className="w-full py-5 bg-[#FF8C00] rounded-2xl font-black text-lg shadow-xl shadow-orange-500/20 active:scale-[0.99] transition-transform flex items-center justify-center gap-3">
+            <button type="submit" className="w-full py-5 bg-[#FF8C00] text-white rounded-2xl font-black text-lg shadow-xl shadow-orange-500/20 active:scale-[0.99] transition-transform flex items-center justify-center gap-3">
               {isRegistering ? t('register') : t('login')}
               <ChevronRight size={20} />
             </button>
