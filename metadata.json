@@ -1,6 +1,6 @@
 {
   "name": "Khushi Tech ERP/CRM",
-  "description": "A comprehensive ERP/CRM solution for lighting infrastructure contractors, featuring bilingual support, field documentation with geotagging, and real-time project management.",
+  "description": "A comprehensive ERP/CRM solution for lighting infrastructure contractors, featuring real-time GPS geofencing, functional inventory ledger, and Gemini-powered smart analysis.",
   "requestFramePermissions": [
     "camera",
     "geolocation"
