@@ -3,19 +3,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Khushi Technology ERP/CRM</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --orange-primary: #FF8C00;
+            --blue-primary: #002366;
+        }
         body {
             font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
             margin: 0;
             padding: 0;
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            text-rendering: optimizeLegibility;
+            color: #374151;
+            font-weight: 400;
+            line-height: 1.5;
         }
-        .hindi-font {
-            font-family: 'Noto Sans Devanagari', sans-serif;
+        
+        /* Balanced Typography Scaling */
+        html { font-size: 14px; }
+        @media (min-width: 768px) { html { font-size: 15px; } }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.06);
+            border-radius: 10px;
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.05);
+        }
+        
+        button, input {
+            transition: all 0.2s ease;
+        }
+
+        .login-card {
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 <script type="importmap">
@@ -31,7 +72,7 @@
 }
 </script>
 </head>
-<body class="bg-gray-50 transition-colors duration-300">
+<body class="bg-[#f3f4f6] dark:bg-[#0b141d] selection:bg-orange-500 selection:text-white">
     <div id="root"></div>
 </body>
 </html>

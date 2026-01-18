@@ -7,8 +7,12 @@ import StaffHome from './views/StaffHome';
 import StaffCreation from './views/StaffCreation';
 import ProjectsView from './views/ProjectsView';
 import InventoryView from './views/InventoryView';
+import ReportsView from './views/ReportsView';
+import CommunicationView from './views/CommunicationView';
+import SettingsView from './views/SettingsView';
 import Login from './views/Login';
 import Navigation from './components/Navigation';
+import { Wifi, WifiOff, CloudSync } from 'lucide-react';
 
 interface AppContextType {
   language: Language;
@@ -21,13 +25,15 @@ interface AppContextType {
   setUser: (u: User | null) => void;
   t: (key: string) => string;
   isDark: boolean;
-  // Master Data & Setters
   projects: Project[];
   setProjects: React.Dispatch<React.SetStateAction<Project[]>>;
   staff: User[];
   inventory: InventoryItem[];
   setInventory: React.Dispatch<React.SetStateAction<InventoryItem[]>>;
   tasks: Task[];
+  triggerKeySelection: () => Promise<void>;
+  isOffline: boolean;
+  syncing: boolean;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -37,6 +43,18 @@ export const useApp = () => {
   if (!context) throw new Error("useApp must be used within AppProvider");
   return context;
 };
+
+declare global {
+  // Fix: Use the correct AIStudio interface provided by the environment to avoid type conflict with 'any'
+  interface AIStudio {
+    hasSelectedApiKey: () => Promise<boolean>;
+    openSelectKey: () => Promise<void>;
+  }
+
+  interface Window {
+    aistudio?: AIStudio;
+  }
+}
 
 const App: React.FC = () => {
   const [language, setLanguageState] = useState<Language>(() => {
@@ -52,8 +70,25 @@ const App: React.FC = () => {
 
   const [activeView, setActiveView] = useState<AppView>(AppView.DASHBOARD);
   const [user, setUser] = useState<User | null>(null);
+  const [isOffline, setIsOffline] = useState(!navigator.onLine);
+  const [syncing, setSyncing] = useState(false);
 
-  // Persistent State Logic
+  // Sync state with online/offline PRD 2.2
+  useEffect(() => {
+    const handleOnline = () => {
+      setIsOffline(false);
+      setSyncing(true);
+      setTimeout(() => setSyncing(false), 2000); // Simulate sync PRD 2.2
+    };
+    const handleOffline = () => setIsOffline(true);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
   const [projects, setProjects] = useState<Project[]>(() => {
     const saved = localStorage.getItem('kt-projects');
     return saved ? JSON.parse(saved) : [
@@ -97,17 +132,27 @@ const App: React.FC = () => {
     localStorage.setItem('khushi-language', newLang);
   };
 
-  const t = (key: string) => (translations[language] as any)[key] || key;
+  const triggerKeySelection = async () => {
+    if (window.aistudio) {
+      await window.aistudio.openSelectKey();
+    }
+  };
+
+  const t = (key: string) => {
+    const res = (translations[language] as any)[key];
+    return res || key;
+  };
+  
   const isDark = theme === Theme.DARK;
 
   useEffect(() => {
     const root = window.document.documentElement;
     if (isDark) {
       root.classList.add('dark');
-      document.body.className = 'transition-colors duration-500 bg-[#0b141d]';
+      document.body.className = 'transition-colors duration-500 bg-[#0b141d] antialiased selection:bg-orange-500 selection:text-white';
     } else {
       root.classList.remove('dark');
-      document.body.className = 'transition-colors duration-500 bg-gray-50';
+      document.body.className = 'transition-colors duration-500 bg-white antialiased selection:bg-blue-600 selection:text-white';
     }
   }, [isDark]);
 
@@ -117,6 +162,9 @@ const App: React.FC = () => {
         case AppView.PROJECTS: return <ProjectsView />;
         case AppView.INVENTORY: return <InventoryView />;
         case AppView.CREATE_STAFF: return <StaffCreation />;
+        case AppView.REPORTS: return <ReportsView />;
+        case AppView.COMMUNICATION: return <CommunicationView />;
+        case AppView.SETTINGS: return <SettingsView />;
         case AppView.DASHBOARD:
         default: return <AdminDashboard />;
       }
@@ -128,19 +176,36 @@ const App: React.FC = () => {
     language, theme, setLanguage, setTheme,
     activeView, setActiveView,
     user, setUser, t, isDark,
-    projects, setProjects, staff, inventory, setInventory, tasks
-  }), [language, theme, activeView, user, projects, staff, inventory, tasks]);
+    projects, setProjects, staff, inventory, setInventory, tasks,
+    triggerKeySelection, isOffline, syncing
+  }), [language, theme, activeView, user, projects, staff, inventory, tasks, isOffline, syncing]);
 
   return (
     <AppContext.Provider value={value}>
-      <div className={`min-h-screen transition-colors duration-500 overflow-hidden ${isDark ? 'dark text-white' : 'text-gray-900'}`}>
+      <div className={`min-h-screen transition-colors duration-500 overflow-hidden flex flex-col md:flex-row ${isDark ? 'dark text-white/90 font-inter' : 'text-slate-900 font-inter'}`}>
         {!user ? <Login /> : (
-          <div className="flex flex-col md:flex-row h-screen overflow-hidden">
+          <>
             <Navigation />
-            <main className="flex-1 overflow-y-auto custom-scrollbar">
+            <main className="flex-1 overflow-y-auto custom-scrollbar bg-inherit relative h-screen">
+              {/* Offline Banner PRD 2.2 */}
+              {isOffline && (
+                <div className="sticky top-0 z-[100] bg-rose-500 text-white text-[10px] font-black uppercase tracking-[0.2em] py-2 px-6 flex items-center justify-between shadow-lg">
+                  <div className="flex items-center gap-2">
+                    <WifiOff size={14} /> {t('offlineMode')}
+                  </div>
+                  <span className="opacity-70">Data stored locally</span>
+                </div>
+              )}
+              {syncing && (
+                <div className="sticky top-0 z-[100] bg-emerald-500 text-white text-[10px] font-black uppercase tracking-[0.2em] py-2 px-6 flex items-center justify-between shadow-lg animate-pulse">
+                  <div className="flex items-center gap-2">
+                    <CloudSync size={14} /> {t('syncing')}
+                  </div>
+                </div>
+              )}
               {renderContent()}
             </main>
-          </div>
+          </>
         )}
       </div>
     </AppContext.Provider>

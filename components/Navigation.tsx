@@ -2,117 +2,87 @@
 import React from 'react';
 import { useApp } from '../App';
 import { Theme, Language, AppView } from '../types';
-import { MENU_ITEMS } from '../constants';
-import { Sun, Moon, Languages, LogOut, ChevronDown, ShieldCheck } from 'lucide-react';
+import { 
+  LayoutGrid, Folder, Users, Briefcase, FileText, 
+  MessageSquare, Sun, Moon, LogOut, ShieldCheck, Settings 
+} from 'lucide-react';
 
 const Navigation: React.FC = () => {
   const { theme, language, setTheme, setLanguage, setUser, activeView, setActiveView, t } = useApp();
 
   const handleLogout = () => setUser(null);
-  const toggleTheme = () => setTheme(theme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT);
-  const toggleLanguage = () => setLanguage(language === Language.EN ? Language.HI : Language.EN);
-
   const isDark = theme === Theme.DARK;
+
+  const menuItems = [
+    { id: AppView.DASHBOARD, icon: <LayoutGrid size={18} />, label: 'dashboard' },
+    { id: AppView.PROJECTS, icon: <Folder size={18} />, label: 'projects' },
+    { id: AppView.STAFF, icon: <Users size={18} />, label: 'staff' },
+    { id: AppView.INVENTORY, icon: <Briefcase size={18} />, label: 'inventory' },
+    { id: AppView.REPORTS, icon: <FileText size={18} />, label: 'reports' },
+    { id: AppView.COMMUNICATION, icon: <MessageSquare size={18} />, label: 'communication' },
+    { id: AppView.SETTINGS, icon: <Settings size={18} />, label: 'settings' },
+  ];
 
   return (
     <>
-      {/* Desktop Sidebar */}
-      <aside 
-        className={`hidden md:flex flex-col w-[300px] h-screen sticky top-0 transition-all duration-500 z-[60] ${
-          isDark ? 'bg-[#0b141d] border-r border-white/5' : 'bg-white border-r border-gray-200'
-        }`}
-      >
-        <div className="p-10 flex items-center space-x-4">
-          <div className="w-12 h-12 bg-gradient-to-br from-[#FF8C00] to-orange-600 rounded-2xl flex items-center justify-center shadow-xl shadow-orange-500/20">
-            <ShieldCheck size={28} className="text-white" />
+      {/* Desktop Sidebar - Narrower & More Compact */}
+      <aside className={`hidden md:flex flex-col w-60 lg:w-64 h-screen sticky top-0 transition-all duration-500 z-[60] ${isDark ? 'bg-[#0b141d] border-r border-white/5' : 'bg-white border-r border-slate-200'}`}>
+        <div className="p-6 pb-8 flex items-center space-x-3">
+          <div className="w-10 h-10 bg-[#FF8C00] rounded-xl flex items-center justify-center shadow-md">
+            <ShieldCheck size={24} className="text-white" />
           </div>
-          <div className="overflow-hidden">
-            <h1 className={`font-black text-xl leading-tight tracking-tighter ${isDark ? 'text-white' : 'text-gray-900'}`}>KHUSHI</h1>
-            <p className="text-[10px] uppercase font-black opacity-30 tracking-[0.3em]">Technology</p>
+          <div>
+            <h1 className={`font-black text-lg leading-none tracking-tighter ${isDark ? 'text-white' : 'text-[#002366]'}`}>KHUSHI</h1>
+            <p className="text-[7px] uppercase font-black opacity-30 tracking-[0.4em] mt-0.5">Technology</p>
           </div>
         </div>
 
-        <nav className="flex-1 px-6 space-y-3 mt-4 overflow-y-auto custom-scrollbar">
-          {MENU_ITEMS.map((item) => (
+        <nav className="flex-1 px-4 space-y-1 overflow-y-auto custom-scrollbar">
+          {menuItems.map((item) => (
             <button
               key={item.id}
-              onClick={() => setActiveView(item.id as AppView)}
-              className={`w-full flex items-center justify-between px-6 py-4 rounded-[1.5rem] transition-all group relative ${
+              onClick={() => setActiveView(item.id)}
+              className={`w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl transition-all duration-200 group relative ${
                 activeView === item.id 
-                  ? 'bg-[#FF8C00] text-white shadow-xl shadow-orange-500/20' 
-                  : isDark 
-                    ? 'hover:bg-white/5 text-gray-500 hover:text-white' 
-                    : 'hover:bg-gray-100 text-gray-400 hover:text-gray-900'
+                  ? 'bg-[#FF8C00] text-white shadow-md' 
+                  : isDark ? 'text-slate-500 hover:text-white hover:bg-white/5' : 'text-slate-400 hover:text-[#002366] hover:bg-slate-50'
               }`}
             >
-              <div className="flex items-center space-x-4">
-                <span className={`${activeView === item.id ? 'text-white' : 'opacity-70 group-hover:opacity-100'}`}>
-                  {item.icon}
-                </span>
-                <span className={`text-sm font-black tracking-tight ${language === Language.HI ? 'hindi-font' : ''}`}>
-                  {t(item.label)}
-                </span>
-              </div>
-              {item.hasSub && (
-                <ChevronDown size={14} className={`${activeView === item.id ? 'text-white/60' : 'opacity-30 group-hover:opacity-60'}`} />
-              )}
-              {activeView === item.id && (
-                <div className="absolute -left-6 w-1.5 h-8 bg-[#FF8C00] rounded-r-full shadow-[0_0_15px_rgba(255,140,0,0.5)]"></div>
-              )}
+              <span className={`transition-transform duration-200 ${activeView === item.id ? 'scale-105' : 'group-hover:scale-105'}`}>
+                {item.icon}
+              </span>
+              <span className={`text-[10px] font-bold uppercase tracking-wider ${language === Language.HI ? 'hindi-font' : ''}`}>
+                {t(item.label)}
+              </span>
             </button>
           ))}
         </nav>
 
-        <div className="p-8 space-y-6">
-          <div className={`p-6 rounded-[2rem] space-y-5 border ${isDark ? 'bg-white/5 border-white/5' : 'bg-gray-50 border-gray-100'}`}>
-            <p className="text-[10px] font-black uppercase tracking-[0.25em] opacity-30 text-center">Preference Control</p>
-            <div className="flex gap-2">
-              <button 
-                onClick={toggleTheme}
-                className={`flex-1 h-12 flex items-center justify-center rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition-all ${
-                  isDark ? 'bg-orange-500 text-white shadow-orange-500/20' : 'bg-white border border-gray-200 text-gray-700 shadow-gray-200/50'
-                }`}
-              >
-                {isDark ? <Sun size={20} /> : <Moon size={20} />}
-              </button>
-              <button 
-                onClick={toggleLanguage}
-                className={`flex-[2] h-12 flex items-center justify-center space-x-2 rounded-2xl border transition-all hover:scale-[1.02] active:scale-[0.98] ${
-                  isDark ? 'bg-white/5 border-white/10 text-white' : 'bg-white border-gray-200 text-gray-700'
-                }`}
-              >
-                <Languages size={18} className="opacity-40" />
-                <span className="text-[10px] font-black uppercase tracking-widest">{language === Language.EN ? 'English' : 'हिंदी'}</span>
-              </button>
-            </div>
+        <div className="p-6 border-t border-inherit space-y-4">
+          <div className={`p-2 rounded-xl border flex items-center justify-between ${isDark ? 'bg-white/5 border-white/5' : 'bg-slate-50 border-slate-200 shadow-inner'}`}>
+             <button onClick={() => setTheme(isDark ? Theme.LIGHT : Theme.DARK)} className={`p-2 rounded-lg transition-all ${isDark ? 'bg-indigo-600 text-white' : 'bg-white text-orange-500 shadow-sm'}`}>
+                {isDark ? <Sun size={14} /> : <Moon size={14} />}
+             </button>
+             <button onClick={() => setLanguage(language === Language.EN ? Language.HI : Language.EN)} className={`px-3 py-1.5 rounded-lg font-bold text-[9px] uppercase tracking-widest ${isDark ? 'text-white/60 hover:text-white' : 'text-slate-600'}`}>
+                {language === Language.EN ? 'EN' : 'हिन्दी'}
+             </button>
           </div>
-          
-          <button 
-            onClick={handleLogout}
-            className={`w-full flex items-center justify-center space-x-3 py-5 rounded-2xl transition-all font-black text-xs uppercase tracking-[0.2em] border border-transparent ${
-              isDark ? 'text-red-400 hover:bg-red-400/5 hover:border-red-400/20' : 'text-red-500 hover:bg-red-500/5 hover:border-red-500/20'
-            }`}
-          >
-            <LogOut size={18} />
-            <span>Sign Out</span>
+          <button onClick={handleLogout} className="w-full py-3 rounded-lg font-bold text-[9px] uppercase tracking-widest text-rose-500 hover:bg-rose-500/5 transition-all flex items-center justify-center gap-2">
+            <LogOut size={14} /> {t('terminateSession')}
           </button>
         </div>
       </aside>
 
-      {/* Mobile Nav (Simplified) */}
-      <nav className={`md:hidden fixed bottom-0 left-0 right-0 h-20 border-t flex items-center justify-around z-50 rounded-t-[2.5rem] shadow-2xl transition-colors duration-500 ${
-        isDark ? 'bg-[#0b141d] border-white/5' : 'bg-white border-gray-100'
-      }`}>
-        {MENU_ITEMS.slice(0, 4).map((item) => (
+      {/* Mobile Navigation - PRD compliant but tighter */}
+      <nav className={`md:hidden fixed bottom-0 left-0 right-0 h-16 border-t flex items-center justify-around z-50 transition-all ${isDark ? 'bg-[#0b141d] border-white/5' : 'bg-white border-slate-200 shadow-lg'}`}>
+        {menuItems.filter(m => [AppView.DASHBOARD, AppView.PROJECTS, AppView.INVENTORY, AppView.SETTINGS].includes(m.id)).map((item) => (
           <button 
             key={item.id} 
-            onClick={() => setActiveView(item.id as AppView)}
-            className={`flex flex-col items-center justify-center space-y-1 transition-all ${activeView === item.id ? 'text-[#FF8C00] scale-110' : 'text-gray-400 opacity-60'}`}
+            onClick={() => setActiveView(item.id)} 
+            className={`flex flex-col items-center justify-center gap-1 w-full h-full transition-all active:scale-95 ${activeView === item.id ? 'text-[#FF8C00]' : 'text-slate-300'}`}
           >
-            <div className={`p-2 rounded-xl ${activeView === item.id ? 'bg-orange-500/10' : ''}`}>
-              {item.icon}
-            </div>
-            <span className="text-[8px] font-black uppercase tracking-widest">{t(item.label).slice(0, 4)}</span>
+             {React.cloneElement(item.icon as React.ReactElement, { size: 20 })}
+             <span className="text-[7px] font-bold uppercase tracking-widest">{t(item.label).slice(0, 5)}</span>
           </button>
         ))}
       </nav>

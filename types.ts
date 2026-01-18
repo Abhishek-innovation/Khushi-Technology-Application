@@ -24,6 +24,7 @@ export enum AppView {
   CREATE_STAFF = 'create_staff',
   INVENTORY = 'inventory',
   REPORTS = 'reports',
+  COMMUNICATION = 'communication',
   SETTINGS = 'settings'
 }
 
@@ -31,7 +32,7 @@ export interface User {
   id: string;
   name: string;
   role: UserRole;
-  email?: string; // Added for 2FA
+  email?: string;
   avatar?: string;
   organization?: string;
   status?: 'ACTIVE' | 'ON_LEAVE' | 'SICK' | 'UNAVAILABLE';
@@ -79,4 +80,9 @@ export interface Task {
   status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'URGENT' | 'BLOCKED';
   location: string;
   instructions: string;
+}
+
+export interface SiteIntelligence {
+  text: string;
+  links: { title: string; uri: string }[];
 }
