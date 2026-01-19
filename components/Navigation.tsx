@@ -93,7 +93,8 @@ const Navigation: React.FC = () => {
             onClick={() => setActiveView(item.id)} 
             className={`flex flex-col items-center justify-center gap-1 w-full h-full transition-all active:scale-95 ${activeView === item.id ? 'text-[#FF8C00]' : 'text-slate-300'}`}
           >
-             {React.cloneElement(item.icon as React.ReactElement, { size: 20 })}
+             {/* Fix: Use React.ReactElement<any> to allow additional props like 'size' when cloning Lucide icons */}
+             {React.cloneElement(item.icon as React.ReactElement<any>, { size: 20 })}
              <span className="text-[8px] font-bold uppercase tracking-tight">{t(item.label)}</span>
           </button>
         ))}

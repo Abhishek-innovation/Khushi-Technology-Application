@@ -9,7 +9,6 @@ import ProjectsView from './views/ProjectsView';
 import InventoryView from './views/InventoryView';
 import ReportsView from './views/ReportsView';
 import CommunicationView from './views/CommunicationView';
-import StaffSettingsView from './views/SettingsView'; // Reusing existing SettingsView
 import Login from './views/Login';
 import Navigation from './components/Navigation';
 import { Wifi, WifiOff, CloudSync } from 'lucide-react';
@@ -156,13 +155,14 @@ const App: React.FC = () => {
   }, [isDark]);
 
   const renderContent = () => {
+    // Shared and Role-Specific Routing logic
     switch (activeView) {
       case AppView.DASHBOARD:
         return user?.role === UserRole.SUPER_ADMIN ? <AdminDashboard /> : <StaffHome />;
       case AppView.PROJECTS:
         return user?.role === UserRole.SUPER_ADMIN ? <ProjectsView /> : <StaffHome />;
       case AppView.STAFF:
-        return <StaffHome />; 
+        return user?.role === UserRole.SUPER_ADMIN ? <StaffHome /> : <StaffHome />; 
       case AppView.CREATE_STAFF:
         return user?.role === UserRole.SUPER_ADMIN ? <StaffCreation /> : <StaffHome />;
       case AppView.INVENTORY:
@@ -193,6 +193,7 @@ const App: React.FC = () => {
           <>
             <Navigation />
             <main className="flex-1 overflow-y-auto custom-scrollbar bg-inherit relative h-screen">
+              {/* Offline Banner */}
               {isOffline && (
                 <div className="sticky top-0 z-[100] bg-rose-500 text-white text-[10px] font-black uppercase tracking-[0.2em] py-2 px-6 flex items-center justify-between shadow-lg">
                   <div className="flex items-center gap-2">

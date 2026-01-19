@@ -7,12 +7,12 @@ import {
   Crosshair, Globe, ArrowUpRight,
   ShieldAlert, Key, Zap, Users, Package, Briefcase,
   Activity, Radio, Battery, Wind, CloudRain, Info,
-  Search, Maximize2, Target, MapPin
+  Search, Maximize2, Target, MapPin, UserPlus
 } from 'lucide-react';
-import { Project, SiteIntelligence } from '../types';
+import { Project, SiteIntelligence, AppView } from '../types';
 
 const AdminDashboard: React.FC = () => {
-  const { projects, staff, inventory, isDark, triggerKeySelection, t } = useApp();
+  const { projects, staff, inventory, isDark, triggerKeySelection, t, setActiveView } = useApp();
   
   const [isAiLoading, setIsAiLoading] = useState(false);
   const [aiReport, setAiReport] = useState<string | null>(null);
@@ -121,14 +121,25 @@ const AdminDashboard: React.FC = () => {
             </div>
           </div>
 
-          <button 
-            onClick={generateAiReport}
-            disabled={isAiLoading}
-            className="w-full md:w-auto px-6 py-3 bg-[#002366] text-white rounded-xl font-bold text-[9px] uppercase tracking-widest flex items-center justify-center gap-3 shadow-md active:scale-[0.98] transition-all disabled:opacity-50"
-          >
-            {isAiLoading ? <Loader2 size={14} className="animate-spin"/> : <Zap size={14} className="text-orange-400" />}
-            {t('operationalAudit')}
-          </button>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button 
+              onClick={() => setActiveView(AppView.CREATE_STAFF)}
+              className={`px-6 py-3 border font-black text-[9px] uppercase tracking-widest flex items-center justify-center gap-3 rounded-xl transition-all active:scale-[0.98] ${
+                isDark ? 'bg-white/5 border-white/10 text-white hover:bg-white/10' : 'bg-white border-slate-200 text-[#002366] shadow-sm hover:border-[#002366]'
+              }`}
+            >
+              <UserPlus size={14} />
+              Create New Staff
+            </button>
+            <button 
+              onClick={generateAiReport}
+              disabled={isAiLoading}
+              className="px-6 py-3 bg-[#002366] text-white rounded-xl font-bold text-[9px] uppercase tracking-widest flex items-center justify-center gap-3 shadow-md active:scale-[0.98] transition-all disabled:opacity-50"
+            >
+              {isAiLoading ? <Loader2 size={14} className="animate-spin" /> : <Zap size={14} className="text-orange-400" />}
+              {t('operationalAudit')}
+            </button>
+          </div>
         </div>
 
         {(aiReport || apiError) && (

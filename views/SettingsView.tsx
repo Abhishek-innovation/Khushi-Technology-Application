@@ -26,7 +26,7 @@ const SettingsView: React.FC = () => {
         </div>
 
         {/* Profile Section */}
-        <section className={`p-10 rounded-[2.5rem] border transition-colors ${isDark ? 'bg-[#16222c] border-white/5' : 'bg-white border-gray-100 shadow-sm'}`}>
+        <section className={`p-10 rounded-[2.5rem] border transition-colors ${isDark ? 'bg-[#16222c] border-white/5' : 'bg-white border-slate-100 shadow-sm'}`}>
           <div className="flex items-center gap-6 mb-10">
             <img src={user?.avatar} className="w-20 h-20 rounded-[2rem] object-cover shadow-2xl" alt="Avatar" />
             <div>
@@ -36,7 +36,7 @@ const SettingsView: React.FC = () => {
               </p>
             </div>
           </div>
-          <button className={`w-full py-4 rounded-2xl border font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-3 active:scale-95 transition-all ${isDark ? 'bg-white/5 border-white/10 hover:bg-white/10' : 'bg-gray-50 border-gray-200 hover:bg-gray-100'}`}>
+          <button className={`w-full py-4 rounded-2xl border font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-3 active:scale-95 transition-all ${isDark ? 'bg-white/5 border-white/10 hover:bg-white/10' : 'bg-slate-50 border-slate-200 hover:bg-slate-100'}`}>
             {isAdmin ? 'Edit Profile Credentials' : 'Update Contact Info'} <ChevronRight size={14} />
           </button>
         </section>
@@ -47,7 +47,7 @@ const SettingsView: React.FC = () => {
           {/* Theme & Language */}
           <div className="space-y-8">
             <h4 className="text-[10px] font-black uppercase opacity-40 tracking-widest ml-4">Interface</h4>
-            <div className={`p-8 rounded-[2.5rem] border space-y-8 transition-colors ${isDark ? 'bg-[#16222c] border-white/5' : 'bg-white border-gray-100 shadow-sm'}`}>
+            <div className={`p-8 rounded-[2.5rem] border space-y-8 transition-colors ${isDark ? 'bg-[#16222c] border-white/5' : 'bg-white border-slate-100 shadow-sm'}`}>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <div className="p-3 bg-indigo-500/10 text-indigo-500 rounded-xl"><Moon size={20}/></div>
@@ -82,7 +82,7 @@ const SettingsView: React.FC = () => {
           {isAdmin && (
             <div className="space-y-8">
               <h4 className="text-[10px] font-black uppercase opacity-40 tracking-widest ml-4">Intelligence Hub</h4>
-              <div className={`p-8 rounded-[2.5rem] border space-y-8 transition-colors ${isDark ? 'bg-[#16222c] border-white/5' : 'bg-white border-gray-100 shadow-sm'}`}>
+              <div className={`p-8 rounded-[2.5rem] border space-y-8 transition-colors ${isDark ? 'bg-[#16222c] border-white/5' : 'bg-white border-slate-100 shadow-sm'}`}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div className="p-3 bg-purple-500/10 text-purple-500 rounded-xl"><Zap size={20}/></div>
@@ -110,7 +110,7 @@ const SettingsView: React.FC = () => {
         </div>
 
         {/* Security Section */}
-        <section className={`p-10 rounded-[3rem] border transition-colors ${isDark ? 'bg-[#16222c] border-white/5' : 'bg-white border-gray-100 shadow-sm'}`}>
+        <section className={`p-10 rounded-[3rem] border transition-colors ${isDark ? 'bg-[#16222c] border-white/5' : 'bg-white border-slate-100 shadow-sm'}`}>
            <div className="flex items-center gap-4 mb-10">
               <div className="p-3 bg-green-500/10 text-green-500 rounded-xl">
                 {isAdmin ? <ShieldCheck size={24}/> : <Lock size={24}/>}
@@ -147,7 +147,7 @@ const SettingsView: React.FC = () => {
                   show: !isAdmin 
                 }
               ].filter(item => item.show).map((item, i) => (
-                <div key={i} className="flex items-center justify-between p-5 rounded-2xl hover:bg-gray-500/5 transition-colors cursor-pointer group">
+                <div key={i} className="flex items-center justify-between p-5 rounded-2xl hover:bg-slate-500/5 transition-colors cursor-pointer group">
                   <div className="flex items-center gap-4">
                     <span className="opacity-30 group-hover:opacity-100 transition-opacity">{item.icon}</span>
                     <span className="text-xs font-bold tracking-tight">{item.label}</span>
