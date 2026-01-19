@@ -27,7 +27,7 @@ const InventoryView: React.FC = () => {
   };
 
   return (
-    <div className={`p-8 md:p-14 min-h-screen transition-colors duration-500 ${isDark ? 'bg-[#0b141d]' : 'bg-gray-50/50'}`}>
+    <div className={`p-8 md:p-14 pb-24 md:pb-14 min-h-screen transition-colors duration-500 ${isDark ? 'bg-[#0b141d]' : 'bg-[#F8FAFC]'}`}>
       <div className="max-w-[1600px] mx-auto space-y-12">
         
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
@@ -47,7 +47,6 @@ const InventoryView: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-12">
-          {/* Main Ledger */}
           <div className={`xl:col-span-8 rounded-[3.5rem] border overflow-hidden ${isDark ? 'bg-[#16222c] border-white/5' : 'bg-white border-slate-100 shadow-[0_20px_60px_rgba(0,0,0,0.03)]'}`}>
             <div className="overflow-x-auto custom-scrollbar">
               <table className="w-full text-left min-w-[700px]">
@@ -100,10 +99,9 @@ const InventoryView: React.FC = () => {
             </div>
           </div>
 
-          {/* Adjustment Console */}
           <div className="xl:col-span-4 space-y-10">
             <div className={`p-12 rounded-[3.5rem] border shadow-2xl transition-all duration-700 ${
-              selectedItem ? (isDark ? 'bg-[#16222c] border-[#FF8C00]/30' : 'bg-[#002366] text-white border-transparent') : (isDark ? 'bg-[#16222c] border-white/5 opacity-50' : 'bg-white border-slate-100 opacity-50')
+              selectedItem ? (isDark ? 'bg-[#16222c] border-[#FF8C00]/30' : 'bg-[#002366] text-white border-transparent') : (isDark ? 'bg-[#16222c] border-white/5 opacity-50' : 'bg-white border-slate-100 opacity-50 shadow-sm')
             }`}>
               <h3 className="text-xl font-black mb-8 uppercase tracking-tighter">Terminal Adjustment</h3>
               
@@ -154,8 +152,7 @@ const InventoryView: React.FC = () => {
               )}
             </div>
 
-            {/* Quick Metrics */}
-            <div className={`p-10 rounded-[3rem] border ${isDark ? 'bg-[#16222c] border-white/5' : 'bg-white border-slate-100'}`}>
+            <div className={`p-10 rounded-[3rem] border ${isDark ? 'bg-[#16222c] border-white/5' : 'bg-white border-slate-100 shadow-sm'}`}>
                <p className="text-[10px] font-black uppercase opacity-30 tracking-widest mb-6">Ledger Health</p>
                <div className="space-y-6">
                   <div className="flex justify-between items-center">

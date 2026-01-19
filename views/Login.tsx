@@ -114,7 +114,7 @@ const Login: React.FC = () => {
 
   if (isVerifying2FA) {
     return (
-      <div className={`w-full min-h-screen flex items-center justify-center p-6 transition-colors duration-500 ${isDark ? 'bg-[#0b141d]' : 'bg-[#f3f4f6]'}`}>
+      <div className={`w-full min-h-screen flex items-center justify-center p-6 transition-colors duration-500 ${isDark ? 'bg-[#0b141d]' : 'bg-[#F8FAFC]'}`}>
         <div className={`w-full max-w-sm p-8 rounded-2xl border login-card animate-fade-in ${
           isDark ? 'bg-[#16222c] border-white/5 text-white' : 'bg-white border-slate-200 text-slate-800'
         }`}>
@@ -168,12 +168,11 @@ const Login: React.FC = () => {
   }
 
   return (
-    <div className={`w-full min-h-screen flex items-center justify-center p-4 transition-colors duration-700 ${isDark ? 'bg-[#0b141d]' : 'bg-[#f3f4f6]'}`}>
+    <div className={`w-full min-h-screen flex items-center justify-center p-4 transition-colors duration-700 ${isDark ? 'bg-[#0b141d]' : 'bg-[#F8FAFC]'}`}>
       <div className={`relative w-full max-w-[760px] flex flex-col md:flex-row rounded-3xl overflow-hidden border login-card animate-fade-in ${
         isDark ? 'border-white/5 bg-[#16222c]' : 'border-slate-200 bg-white shadow-xl shadow-slate-300/30'
       }`}>
         
-        {/* Left Side: Branding */}
         <div className={`w-full md:w-[38%] flex flex-col justify-between p-8 text-white transition-all duration-700 ${
           isDark ? 'bg-[#001b4d]' : 'bg-[#002366]'
         }`}>
@@ -191,7 +190,6 @@ const Login: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Side: Form */}
         <div className={`flex-1 p-8 md:p-10 flex flex-col justify-center transition-colors duration-500 ${isDark ? 'text-white' : 'text-slate-800'}`}>
           <div className="flex justify-between items-center mb-8">
             <div className={`flex p-0.5 rounded-lg border transition-colors ${isDark ? 'bg-white/5 border-white/10' : 'bg-slate-100 border-slate-200'}`}>

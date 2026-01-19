@@ -14,7 +14,6 @@ const ProjectsView: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // New Project Form State
   const [newProject, setNewProject] = useState({
     name: '',
     client: '',
@@ -45,7 +44,7 @@ const ProjectsView: React.FC = () => {
   );
 
   return (
-    <div className={`p-8 min-h-screen transition-colors duration-500 ${isDark ? 'bg-[#0b141d]' : 'bg-gray-50'}`}>
+    <div className={`p-8 pb-24 md:pb-8 min-h-screen transition-colors duration-500 ${isDark ? 'bg-[#0b141d]' : 'bg-[#F8FAFC]'}`}>
       <div className="max-w-[1600px] mx-auto space-y-8">
         
         <div className="flex items-center justify-between">
@@ -58,7 +57,6 @@ const ProjectsView: React.FC = () => {
           </button>
         </div>
 
-        {/* Modal */}
         {isModalOpen && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
             <div className={`w-full max-w-2xl rounded-[3rem] p-10 border shadow-2xl animate-in zoom-in-95 duration-300 ${isDark ? 'bg-[#16222c] border-white/10' : 'bg-white border-gray-100'}`}>
@@ -85,7 +83,6 @@ const ProjectsView: React.FC = () => {
           </div>
         )}
 
-        {/* Existing Project Grid (Simplified for clarity) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProjects.map((p) => (
             <div key={p.id} className={`p-8 rounded-[2.5rem] border transition-all ${isDark ? 'bg-[#16222c]/60 border-white/5' : 'bg-white border-gray-100 shadow-xl'}`}>

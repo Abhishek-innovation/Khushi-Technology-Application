@@ -40,8 +40,8 @@ const StaffHome: React.FC = () => {
   };
 
   return (
-    <div className={`min-h-screen pb-20 transition-colors duration-500 ${isDark ? 'bg-[#0b141d]' : 'bg-[#f3f4f6]'}`}>
-      <header className={`px-4 pt-6 pb-4 sticky top-0 z-40 bg-white/80 dark:bg-[#0b141d]/80 backdrop-blur-md border-b ${isDark ? 'border-white/5' : 'border-slate-100 shadow-sm'}`}>
+    <div className={`min-h-screen pb-28 transition-colors duration-500 ${isDark ? 'bg-[#0b141d]' : 'bg-[#F8FAFC]'}`}>
+      <header className={`px-4 pt-6 pb-4 sticky top-0 z-40 transition-colors ${isDark ? 'bg-[#0b141d]/80 border-white/5' : 'bg-white/80 border-slate-100 shadow-sm'} backdrop-blur-md border-b`}>
         <div className="flex justify-between items-center max-w-lg mx-auto">
           <div>
             <h1 className={`text-base font-bold tracking-tight ${isDark ? 'text-white' : 'text-[#002366]'}`}>
@@ -152,7 +152,7 @@ const StaffHome: React.FC = () => {
           ))}
         </div>
 
-        <div className={`p-4 rounded-2xl border ${isDark ? 'bg-indigo-500/5 border-indigo-500/10' : 'bg-indigo-50 border-indigo-100 shadow-sm'}`}>
+        <div className={`p-4 rounded-2xl border ${isDark ? 'bg-indigo-500/5 border-indigo-500/10' : 'bg-white border-indigo-100 shadow-sm'}`}>
            <div className="flex items-center gap-2 mb-2">
               <div className="p-2 bg-indigo-500 text-white rounded-lg"><Info size={14}/></div>
               <h4 className="text-[10px] font-bold uppercase tracking-tight">Support Nexus</h4>

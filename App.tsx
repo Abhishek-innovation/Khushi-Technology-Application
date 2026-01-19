@@ -9,10 +9,11 @@ import ProjectsView from './views/ProjectsView';
 import InventoryView from './views/InventoryView';
 import ReportsView from './views/ReportsView';
 import CommunicationView from './views/CommunicationView';
-import SettingsView from './views/SettingsView';
+import StaffSettingsView from './views/SettingsView'; // Reusing existing SettingsView
 import Login from './views/Login';
 import Navigation from './components/Navigation';
 import { Wifi, WifiOff, CloudSync } from 'lucide-react';
+import SettingsView from './views/SettingsView';
 
 interface AppContextType {
   language: Language;
@@ -45,7 +46,6 @@ export const useApp = () => {
 };
 
 declare global {
-  // Fix: Use the correct AIStudio interface provided by the environment to avoid type conflict with 'any'
   interface AIStudio {
     hasSelectedApiKey: () => Promise<boolean>;
     openSelectKey: () => Promise<void>;
@@ -73,12 +73,11 @@ const App: React.FC = () => {
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
   const [syncing, setSyncing] = useState(false);
 
-  // Sync state with online/offline PRD 2.2
   useEffect(() => {
     const handleOnline = () => {
       setIsOffline(false);
       setSyncing(true);
-      setTimeout(() => setSyncing(false), 2000); // Simulate sync PRD 2.2
+      setTimeout(() => setSyncing(false), 2000);
     };
     const handleOffline = () => setIsOffline(true);
     window.addEventListener('online', handleOnline);
@@ -152,24 +151,31 @@ const App: React.FC = () => {
       document.body.className = 'transition-colors duration-500 bg-[#0b141d] antialiased selection:bg-orange-500 selection:text-white';
     } else {
       root.classList.remove('dark');
-      document.body.className = 'transition-colors duration-500 bg-white antialiased selection:bg-blue-600 selection:text-white';
+      document.body.className = 'transition-colors duration-500 bg-[#F8FAFC] antialiased selection:bg-blue-600 selection:text-white';
     }
   }, [isDark]);
 
   const renderContent = () => {
-    if (user?.role === UserRole.SUPER_ADMIN) {
-      switch (activeView) {
-        case AppView.PROJECTS: return <ProjectsView />;
-        case AppView.INVENTORY: return <InventoryView />;
-        case AppView.CREATE_STAFF: return <StaffCreation />;
-        case AppView.REPORTS: return <ReportsView />;
-        case AppView.COMMUNICATION: return <CommunicationView />;
-        case AppView.SETTINGS: return <SettingsView />;
-        case AppView.DASHBOARD:
-        default: return <AdminDashboard />;
-      }
+    switch (activeView) {
+      case AppView.DASHBOARD:
+        return user?.role === UserRole.SUPER_ADMIN ? <AdminDashboard /> : <StaffHome />;
+      case AppView.PROJECTS:
+        return user?.role === UserRole.SUPER_ADMIN ? <ProjectsView /> : <StaffHome />;
+      case AppView.STAFF:
+        return <StaffHome />; 
+      case AppView.CREATE_STAFF:
+        return user?.role === UserRole.SUPER_ADMIN ? <StaffCreation /> : <StaffHome />;
+      case AppView.INVENTORY:
+        return <InventoryView />;
+      case AppView.REPORTS:
+        return user?.role === UserRole.SUPER_ADMIN ? <ReportsView /> : <StaffHome />;
+      case AppView.COMMUNICATION:
+        return <CommunicationView />;
+      case AppView.SETTINGS:
+        return <SettingsView />;
+      default:
+        return user?.role === UserRole.SUPER_ADMIN ? <AdminDashboard /> : <StaffHome />;
     }
-    return <StaffHome />;
   };
 
   const value = useMemo(() => ({
@@ -187,7 +193,6 @@ const App: React.FC = () => {
           <>
             <Navigation />
             <main className="flex-1 overflow-y-auto custom-scrollbar bg-inherit relative h-screen">
-              {/* Offline Banner PRD 2.2 */}
               {isOffline && (
                 <div className="sticky top-0 z-[100] bg-rose-500 text-white text-[10px] font-black uppercase tracking-[0.2em] py-2 px-6 flex items-center justify-between shadow-lg">
                   <div className="flex items-center gap-2">

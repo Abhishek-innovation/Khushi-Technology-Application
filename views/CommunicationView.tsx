@@ -15,14 +15,13 @@ const CommunicationView: React.FC = () => {
   ]);
 
   return (
-    <div className={`flex flex-col h-full transition-colors duration-500 ${isDark ? 'bg-[#0b141d]' : 'bg-gray-50'}`}>
+    <div className={`flex flex-col h-full transition-colors duration-500 ${isDark ? 'bg-[#0b141d]' : 'bg-[#F8FAFC]'}`}>
       <div className="p-8 pb-0">
         <h1 className={`text-3xl font-black mb-8 ${isDark ? 'text-white' : 'text-[#002366]'}`}>Communication Hub</h1>
       </div>
 
       <div className="flex-1 flex overflow-hidden p-8 pt-0 gap-8">
-        {/* Left Sidebar: Channels & Staff */}
-        <div className={`hidden lg:flex flex-col w-80 rounded-[2.5rem] border overflow-hidden ${isDark ? 'bg-[#16222c] border-white/5' : 'bg-white border-gray-100 shadow-xl'}`}>
+        <div className={`hidden lg:flex flex-col w-80 rounded-[2.5rem] border overflow-hidden transition-colors ${isDark ? 'bg-[#16222c] border-white/5' : 'bg-white border-gray-100 shadow-xl'}`}>
           <div className="p-6 border-b border-inherit">
              <div className={`flex items-center gap-3 p-3 rounded-2xl border ${isDark ? 'bg-white/5 border-white/5' : 'bg-gray-50 border-gray-100'}`}>
                 <Search size={16} className="opacity-40" />
@@ -71,9 +70,7 @@ const CommunicationView: React.FC = () => {
           </div>
         </div>
 
-        {/* Main Chat Area */}
-        <div className={`flex-1 flex flex-col rounded-[2.5rem] border overflow-hidden ${isDark ? 'bg-[#16222c] border-white/5' : 'bg-white border-gray-100 shadow-2xl'}`}>
-           {/* Chat Header */}
+        <div className={`flex-1 flex flex-col rounded-[2.5rem] border overflow-hidden transition-colors ${isDark ? 'bg-[#16222c] border-white/5' : 'bg-white border-gray-100 shadow-2xl'}`}>
            <div className="p-6 border-b border-inherit flex items-center justify-between">
               <div className="flex items-center gap-4">
                  <div className="p-3 bg-[#FF8C00]/10 text-[#FF8C00] rounded-2xl">
@@ -91,7 +88,6 @@ const CommunicationView: React.FC = () => {
               </button>
            </div>
 
-           {/* Messages Feed */}
            <div className="flex-1 overflow-y-auto custom-scrollbar p-8 space-y-8">
               {chatHistory.map(msg => (
                 <div key={msg.id} className={`flex gap-4 ${msg.role === 'ADMIN' ? 'flex-row-reverse' : ''}`}>
@@ -119,7 +115,6 @@ const CommunicationView: React.FC = () => {
               ))}
            </div>
 
-           {/* Chat Input */}
            <div className="p-6 border-t border-inherit">
               <div className={`flex items-center gap-4 p-4 rounded-[2rem] border transition-all ${isDark ? 'bg-white/5 border-white/5 focus-within:border-[#FF8C00]/50' : 'bg-gray-50 border-gray-200 focus-within:border-[#FF8C00]/50'}`}>
                  <button className="p-2 opacity-40 hover:opacity-100 transition-opacity">

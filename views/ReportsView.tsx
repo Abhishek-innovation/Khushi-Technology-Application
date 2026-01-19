@@ -64,9 +64,8 @@ const ReportsView: React.FC = () => {
   };
 
   return (
-    <div className={`p-8 md:p-14 space-y-12 min-h-screen transition-colors duration-500 ${isDark ? 'bg-[#0b141d]' : 'bg-gray-50'}`}>
+    <div className={`p-8 md:p-14 pb-24 md:pb-14 space-y-12 min-h-screen transition-colors duration-500 ${isDark ? 'bg-[#0b141d]' : 'bg-[#F8FAFC]'}`}>
       
-      {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
         <div>
            <h1 className={`text-4xl font-black tracking-tight ${isDark ? 'text-white' : 'text-[#002366]'}`}>Enterprise Analytics</h1>
@@ -87,7 +86,6 @@ const ReportsView: React.FC = () => {
         </div>
       </div>
 
-      {/* Metrics Row */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
          {[
            { label: 'Weekly Velocity', val: '88%', icon: <TrendingUp />, color: 'text-emerald-500' },
@@ -105,7 +103,6 @@ const ReportsView: React.FC = () => {
          ))}
       </div>
 
-      {/* Analysis Output Pane */}
       {(aiAnalysis || errorMsg) && (
         <div className={`p-12 rounded-[3.5rem] border animate-in slide-in-from-top-4 duration-500 ${errorMsg ? 'bg-rose-500/5 border-rose-500/20' : 'bg-[#FF8C00]/5 border-[#FF8C00]/20'}`}>
            <div className="flex flex-col md:flex-row items-start gap-10">
@@ -139,10 +136,8 @@ const ReportsView: React.FC = () => {
         </div>
       )}
 
-      {/* Visual Analytics */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 pb-12">
-         {/* Line Chart */}
-         <div className={`p-12 rounded-[3.5rem] border ${isDark ? 'bg-[#16222c] border-white/5' : 'bg-white border-slate-100 shadow-2xl shadow-slate-200/30'}`}>
+         <div className={`p-12 rounded-[3.5rem] border transition-colors ${isDark ? 'bg-[#16222c] border-white/5' : 'bg-white border-slate-100 shadow-2xl shadow-slate-200/30'}`}>
             <div className="flex items-center justify-between mb-12">
                <div>
                   <h3 className={`text-2xl font-black tracking-tighter ${isDark ? 'text-white' : 'text-[#002366]'}`}>Installation Velocity</h3>
@@ -171,8 +166,7 @@ const ReportsView: React.FC = () => {
             </div>
          </div>
 
-         {/* Distribution Chart */}
-         <div className={`p-12 rounded-[3.5rem] border ${isDark ? 'bg-[#16222c] border-white/5' : 'bg-white border-slate-100 shadow-2xl shadow-slate-200/30'}`}>
+         <div className={`p-12 rounded-[3.5rem] border transition-colors ${isDark ? 'bg-[#16222c] border-white/5' : 'bg-white border-slate-100 shadow-2xl shadow-slate-200/30'}`}>
             <div className="flex items-center justify-between mb-12">
                <div>
                   <h3 className={`text-2xl font-black tracking-tighter ${isDark ? 'text-white' : 'text-[#002366]'}`}>Asset Distribution</h3>
