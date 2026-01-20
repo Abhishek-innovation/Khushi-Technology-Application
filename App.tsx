@@ -69,7 +69,7 @@ const App: React.FC = () => {
 
   const [activeView, setActiveView] = useState<AppView>(AppView.DASHBOARD);
   const [user, setUser] = useState<User | null>(null);
-  const [isOffline, setIsOffline] = useState(!navigator.onLine);
+  const [isOffline, setIsOffline] = useState(typeof navigator !== 'undefined' ? !navigator.onLine : false);
   const [syncing, setSyncing] = useState(false);
 
   useEffect(() => {
@@ -155,14 +155,13 @@ const App: React.FC = () => {
   }, [isDark]);
 
   const renderContent = () => {
-    // Shared and Role-Specific Routing logic
     switch (activeView) {
       case AppView.DASHBOARD:
         return user?.role === UserRole.SUPER_ADMIN ? <AdminDashboard /> : <StaffHome />;
       case AppView.PROJECTS:
         return user?.role === UserRole.SUPER_ADMIN ? <ProjectsView /> : <StaffHome />;
       case AppView.STAFF:
-        return user?.role === UserRole.SUPER_ADMIN ? <StaffHome /> : <StaffHome />; 
+        return <StaffHome />; 
       case AppView.CREATE_STAFF:
         return user?.role === UserRole.SUPER_ADMIN ? <StaffCreation /> : <StaffHome />;
       case AppView.INVENTORY:
@@ -193,7 +192,6 @@ const App: React.FC = () => {
           <>
             <Navigation />
             <main className="flex-1 overflow-y-auto custom-scrollbar bg-inherit relative h-screen">
-              {/* Offline Banner */}
               {isOffline && (
                 <div className="sticky top-0 z-[100] bg-rose-500 text-white text-[10px] font-black uppercase tracking-[0.2em] py-2 px-6 flex items-center justify-between shadow-lg">
                   <div className="flex items-center gap-2">
