@@ -11,7 +11,7 @@ import ReportsView from './views/ReportsView';
 import CommunicationView from './views/CommunicationView';
 import Login from './views/Login';
 import Navigation from './components/Navigation';
-import { Wifi, WifiOff, CloudSync } from 'lucide-react';
+import { Wifi, WifiOff, RefreshCw } from 'lucide-react';
 import SettingsView from './views/SettingsView';
 
 interface AppContextType {
@@ -203,9 +203,9 @@ const App: React.FC = () => {
                 </div>
               )}
               {syncing && (
-                <div className="sticky top-0 z-[100] bg-emerald-500 text-white text-[10px] font-black uppercase tracking-[0.2em] py-2 px-6 flex items-center justify-between shadow-lg animate-pulse">
+                <div className="sticky top-0 z-[100] bg-emerald-500 text-white text-[10px] font-black uppercase tracking-[0.2em] py-2 px-6 flex items-center justify-between shadow-lg">
                   <div className="flex items-center gap-2">
-                    <CloudSync size={14} /> {t('syncing')}
+                    <RefreshCw size={14} className="animate-spin" /> {t('syncing')}
                   </div>
                 </div>
               )}
