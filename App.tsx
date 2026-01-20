@@ -31,6 +31,7 @@ interface AppContextType {
   inventory: InventoryItem[];
   setInventory: React.Dispatch<React.SetStateAction<InventoryItem[]>>;
   tasks: Task[];
+  setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
   triggerKeySelection: () => Promise<void>;
   isOffline: boolean;
   syncing: boolean;
@@ -108,9 +109,12 @@ const App: React.FC = () => {
     { id: 'S002', name: 'Priya Sharma', role: UserRole.TECHNICIAN, status: 'ACTIVE', workload: 90, avatar: 'https://i.pravatar.cc/150?u=s2' }
   ]);
 
-  const [tasks] = useState<Task[]>([
-    { id: 'T001', title: 'Install Poles 1-5', projectId: 'P001', projectName: 'Rajendra Nagar', assignedTo: ['S003'], deadline: 'Today', status: 'URGENT', location: 'Sector 4', instructions: 'Verify depth.' }
-  ]);
+  const [tasks, setTasks] = useState<Task[]>(() => {
+    const saved = localStorage.getItem('kt-tasks');
+    return saved ? JSON.parse(saved) : [
+      { id: 'T001', title: 'Install Poles 1-5', projectId: 'P001', projectName: 'Rajendra Nagar', assignedTo: ['S003'], deadline: 'Today', status: 'URGENT', location: 'Rajendra Nagar, Sector 4', instructions: 'Verify depth of 1.5m for each pole base.' }
+    ];
+  });
 
   useEffect(() => {
     localStorage.setItem('kt-projects', JSON.stringify(projects));
@@ -119,6 +123,10 @@ const App: React.FC = () => {
   useEffect(() => {
     localStorage.setItem('kt-inventory', JSON.stringify(inventory));
   }, [inventory]);
+
+  useEffect(() => {
+    localStorage.setItem('kt-tasks', JSON.stringify(tasks));
+  }, [tasks]);
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
@@ -181,7 +189,7 @@ const App: React.FC = () => {
     language, theme, setLanguage, setTheme,
     activeView, setActiveView,
     user, setUser, t, isDark,
-    projects, setProjects, staff, inventory, setInventory, tasks,
+    projects, setProjects, staff, inventory, setInventory, tasks, setTasks,
     triggerKeySelection, isOffline, syncing
   }), [language, theme, activeView, user, projects, staff, inventory, tasks, isOffline, syncing]);
 
