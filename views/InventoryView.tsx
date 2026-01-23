@@ -32,15 +32,15 @@ const InventoryView: React.FC = () => {
         
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
           <div>
-            <h1 className={`text-4xl font-black tracking-tight ${isDark ? 'text-white' : 'text-[#002366]'}`}>Inventory Ledger</h1>
+            <h1 className={`text-3xl md:text-4xl font-black tracking-tight ${isDark ? 'text-white' : 'text-[#002366]'}`}>Inventory Ledger</h1>
             <p className="text-[10px] font-black uppercase opacity-30 mt-2 tracking-[0.3em]">Asset Distribution & Stock Lifecycle</p>
           </div>
           <div className="flex items-center gap-4">
-             <div className={`flex items-center gap-3 px-6 py-4 rounded-2xl border ${isDark ? 'bg-white/5 border-white/5' : 'bg-white border-slate-100 shadow-sm'}`}>
+             <div className={`flex items-center gap-3 px-6 h-12 md:h-14 rounded-2xl border ${isDark ? 'bg-white/5 border-white/5' : 'bg-white border-slate-100 shadow-sm'}`}>
                 <Search size={16} className="opacity-30" />
-                <input placeholder="Search assets..." className="bg-transparent outline-none text-[10px] font-black uppercase tracking-widest w-48" />
+                <input placeholder="Search assets..." className="bg-transparent outline-none text-[10px] font-black uppercase tracking-widest w-32 sm:w-48" />
              </div>
-             <button className={`p-4 rounded-2xl border transition-all ${isDark ? 'bg-white/5 border-white/5 hover:bg-white/10' : 'bg-white border-slate-100 shadow-sm hover:border-[#FF8C00]'}`}>
+             <button className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl border transition-all flex items-center justify-center ${isDark ? 'bg-white/5 border-white/5 hover:bg-white/10' : 'bg-white border-slate-100 shadow-sm hover:border-[#FF8C00]'}`}>
                 <SlidersHorizontal size={20} className="opacity-40" />
              </button>
           </div>
@@ -83,7 +83,7 @@ const InventoryView: React.FC = () => {
                       <td className="px-10 py-8 text-right">
                         <button 
                           onClick={() => setSelectedItem(item.id)}
-                          className={`px-6 py-3 rounded-2xl text-[9px] font-black uppercase tracking-[0.2em] transition-all active:scale-95 ${
+                          className={`h-11 px-6 rounded-2xl text-[9px] font-black uppercase tracking-[0.2em] transition-all active:scale-95 flex items-center justify-center ${
                             selectedItem === item.id 
                               ? 'bg-[#FF8C00] text-white shadow-xl shadow-orange-500/20' 
                               : isDark ? 'bg-white/5 text-white/40 hover:text-white' : 'bg-slate-100 text-slate-400 hover:text-[#002366] hover:bg-slate-200'
@@ -128,14 +128,14 @@ const InventoryView: React.FC = () => {
                   <div className="grid grid-cols-2 gap-5">
                     <button 
                       onClick={() => handleUpdateStock('IN')}
-                      className="group p-8 bg-emerald-500 text-white rounded-[2.5rem] transition-all active:scale-95 flex flex-col items-center gap-4 shadow-2xl shadow-emerald-900/20"
+                      className="group h-32 md:h-40 bg-emerald-500 text-white rounded-[2.5rem] transition-all active:scale-95 flex flex-col items-center justify-center gap-4 shadow-2xl shadow-emerald-900/20"
                     >
                       <ArrowUpRight size={24} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                       <span className="text-[10px] font-black uppercase tracking-widest">Record In</span>
                     </button>
                     <button 
                       onClick={() => handleUpdateStock('OUT')}
-                      className="group p-8 bg-rose-500 text-white rounded-[2.5rem] transition-all active:scale-95 flex flex-col items-center gap-4 shadow-2xl shadow-rose-900/20"
+                      className="group h-32 md:h-40 bg-rose-500 text-white rounded-[2.5rem] transition-all active:scale-95 flex flex-col items-center justify-center gap-4 shadow-2xl shadow-rose-900/20"
                     >
                       <ArrowDownLeft size={24} className="group-hover:-translate-x-1 group-hover:translate-y-1 transition-transform" />
                       <span className="text-[10px] font-black uppercase tracking-widest">Record Out</span>
@@ -144,7 +144,7 @@ const InventoryView: React.FC = () => {
 
                   <button 
                     onClick={() => setSelectedItem(null)}
-                    className="w-full py-4 text-[9px] font-black uppercase opacity-30 hover:opacity-100 transition-opacity tracking-[0.4em]"
+                    className="w-full h-12 flex items-center justify-center text-[9px] font-black uppercase opacity-30 hover:opacity-100 transition-opacity tracking-[0.4em]"
                   >
                     Cancel Transaction
                   </button>

@@ -5,6 +5,7 @@ import { translations } from './translations';
 import AdminDashboard from './views/AdminDashboard';
 import StaffHome from './views/StaffHome';
 import StaffCreation from './views/StaffCreation';
+import StaffManagementView from './views/StaffManagementView';
 import ProjectsView from './views/ProjectsView';
 import InventoryView from './views/InventoryView';
 import ReportsView from './views/ReportsView';
@@ -28,6 +29,7 @@ interface AppContextType {
   projects: Project[];
   setProjects: React.Dispatch<React.SetStateAction<Project[]>>;
   staff: User[];
+  setStaff: React.Dispatch<React.SetStateAction<User[]>>;
   inventory: InventoryItem[];
   setInventory: React.Dispatch<React.SetStateAction<InventoryItem[]>>;
   tasks: Task[];
@@ -83,6 +85,7 @@ const App: React.FC = () => {
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
     return () => {
+      // Corrected: use removeEventListener instead of the non-existent removeValues
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
     };
@@ -104,10 +107,15 @@ const App: React.FC = () => {
     ];
   });
 
-  const [staff] = useState<User[]>([
-    { id: 'S001', name: 'Rajesh Kumar', role: UserRole.SITE_SUPERVISOR, status: 'ACTIVE', workload: 85, avatar: 'https://i.pravatar.cc/150?u=s1' },
-    { id: 'S002', name: 'Priya Sharma', role: UserRole.TECHNICIAN, status: 'ACTIVE', workload: 90, avatar: 'https://i.pravatar.cc/150?u=s2' }
-  ]);
+  const [staff, setStaff] = useState<User[]>(() => {
+    const saved = localStorage.getItem('kt-staff');
+    return saved ? JSON.parse(saved) : [
+      { id: 'S001', name: 'Rajesh Kumar', role: UserRole.SITE_SUPERVISOR, status: 'ACTIVE', workload: 85, avatar: 'https://i.pravatar.cc/150?u=s1' },
+      { id: 'S002', name: 'Priya Sharma', role: UserRole.TECHNICIAN, status: 'ACTIVE', workload: 90, avatar: 'https://i.pravatar.cc/150?u=s2' },
+      { id: 'S003', name: 'Amit Singh', role: UserRole.ELECTRICIAN, status: 'ACTIVE', workload: 45, avatar: 'https://i.pravatar.cc/150?u=s3' },
+      { id: 'S004', name: 'Sanjay Gupta', role: UserRole.WAREHOUSE_MANAGER, status: 'ACTIVE', workload: 30, avatar: 'https://i.pravatar.cc/150?u=s4' }
+    ];
+  });
 
   const [tasks, setTasks] = useState<Task[]>(() => {
     const saved = localStorage.getItem('kt-tasks');
@@ -127,6 +135,10 @@ const App: React.FC = () => {
   useEffect(() => {
     localStorage.setItem('kt-tasks', JSON.stringify(tasks));
   }, [tasks]);
+
+  useEffect(() => {
+    localStorage.setItem('kt-staff', JSON.stringify(staff));
+  }, [staff]);
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
@@ -169,7 +181,7 @@ const App: React.FC = () => {
       case AppView.PROJECTS:
         return user?.role === UserRole.SUPER_ADMIN ? <ProjectsView /> : <StaffHome />;
       case AppView.STAFF:
-        return <StaffHome />; 
+        return user?.role === UserRole.SUPER_ADMIN ? <StaffManagementView /> : <StaffHome />; 
       case AppView.CREATE_STAFF:
         return user?.role === UserRole.SUPER_ADMIN ? <StaffCreation /> : <StaffHome />;
       case AppView.INVENTORY:
@@ -189,7 +201,7 @@ const App: React.FC = () => {
     language, theme, setLanguage, setTheme,
     activeView, setActiveView,
     user, setUser, t, isDark,
-    projects, setProjects, staff, inventory, setInventory, tasks, setTasks,
+    projects, setProjects, staff, setStaff, inventory, setInventory, tasks, setTasks,
     triggerKeySelection, isOffline, syncing
   }), [language, theme, activeView, user, projects, staff, inventory, tasks, isOffline, syncing]);
 

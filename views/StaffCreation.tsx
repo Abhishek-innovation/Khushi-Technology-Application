@@ -1,196 +1,243 @@
 
 import React, { useState } from 'react';
 import { useApp } from '../App';
-import { AppView, Theme } from '../types';
-import { ChevronRight, RefreshCw, Key, Eye, EyeOff, Send, HelpCircle, CheckCircle2 } from 'lucide-react';
+import { AppView, Theme, UserRole } from '../types';
+import { 
+  ChevronRight, RefreshCw, Key, Eye, EyeOff, Send, 
+  HelpCircle, CheckCircle2, Globe, MapPin, Loader2
+} from 'lucide-react';
 
 const StaffCreation: React.FC = () => {
-  const { theme, setActiveView, isDark } = useApp();
+  const { isDark, setActiveView, setStaff } = useApp();
   const [username, setUsername] = useState('rajesh.k2026');
-  const [password, setPassword] = useState('••••••••••••');
+  const [password, setPassword] = useState('khushitech@2026');
   const [showPassword, setShowPassword] = useState(false);
-  const [step, setStep] = useState(2); // Starting at Credentials step for demo
+  const [isProvisioning, setIsProvisioning] = useState(false);
+  const [step] = useState(2);
+
+  const handleRefreshUsername = () => {
+    const rand = Math.floor(Math.random() * 9000) + 1000;
+    setUsername(`rajesh.k${rand}`);
+  };
+
+  const handleRotateEncryption = () => {
+    const chars = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+    let newPass = "";
+    for (let i = 0; i < 12; i++) {
+      newPass += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    setPassword(newPass);
+  };
+
+  const handleProvision = () => {
+    setIsProvisioning(true);
+    // Simulate encryption and sync latency
+    setTimeout(() => {
+      const newUser = {
+        id: `S-${Date.now()}`,
+        name: 'Rajesh Kumar',
+        role: UserRole.SITE_SUPERVISOR,
+        status: 'ACTIVE' as const,
+        workload: 0,
+        avatar: `https://i.pravatar.cc/150?u=${username}`,
+        organization: 'Khushi Technology'
+      };
+      setStaff(prev => [...prev, newUser]);
+      setIsProvisioning(false);
+      setActiveView(AppView.DASHBOARD);
+    }, 2000);
+  };
+
+  const cardStyle = `rounded-[2.5rem] border transition-all duration-500 ${
+    isDark 
+      ? 'bg-[#0f172a]/80 backdrop-blur-3xl border-slate-800 shadow-2xl shadow-black/60' 
+      : 'bg-white border-slate-200 shadow-2xl shadow-slate-200/50'
+  }`;
 
   return (
-    <div className={`p-4 md:p-8 min-h-screen transition-colors duration-500 ${isDark ? 'bg-[#0b141d]' : 'bg-[#002366]'}`}>
-      <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className={`p-6 md:p-12 min-h-screen transition-colors duration-700 ${isDark ? 'bg-[#0b141d]' : 'bg-slate-50'}`}>
+      <div className="max-w-6xl mx-auto space-y-10 animate-fade-in">
         
-        {/* Main Content Card */}
-        <div className={`rounded-[2.5rem] md:rounded-[3rem] overflow-hidden shadow-2xl border transition-all ${
-          isDark 
-            ? 'bg-[#16222c]/90 backdrop-blur-2xl border-white/10' 
-            : 'bg-white border-white/20'
-        }`}>
+        <div className={cardStyle}>
           
-          {/* Header & Stepper */}
-          <div className="p-6 md:p-10 flex flex-col lg:flex-row items-center justify-between gap-6 border-b border-inherit">
-            <h1 className={`text-2xl md:text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-[#002366]'}`}>
-              Create New Staff Credentials
+          {/* Header Section with Stepper */}
+          <div className="p-8 md:p-12 flex flex-col lg:flex-row lg:items-center justify-between gap-10 border-b border-inherit">
+            <h1 className={`text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-[#002366]'}`}>
+              Provision Personnel
             </h1>
             
-            <div className={`flex flex-wrap justify-center items-center gap-1 p-1.5 rounded-full border ${isDark ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-gray-100'}`}>
-              {[
-                { n: 1, label: 'Staff Profile' },
-                { n: 2, label: 'Credentials' },
-                { n: 3, label: 'Review & Finish' }
-              ].map((s) => (
-                <div key={s.n} className={`flex items-center gap-2 px-4 md:px-5 py-2 md:py-2.5 rounded-full text-[10px] md:text-xs font-black transition-all ${
-                  s.n === step 
-                    ? 'bg-[#FF8C00] text-white shadow-lg shadow-orange-500/20' 
-                    : 'opacity-40'
-                }`}>
-                  <span className={`${isDark ? 'text-white' : 'text-[#002366]'} ${s.n === step ? 'text-white' : ''}`}>{s.label}</span>
-                  {s.n < 3 && <ChevronRight size={14} className="opacity-40" />}
-                </div>
-              ))}
+            <div className="flex items-center gap-3">
+              <div className={`flex items-center gap-1.5 p-1.5 rounded-2xl border ${isDark ? 'bg-slate-800/50 border-white/5' : 'bg-slate-50 border-slate-200 shadow-inner'}`}>
+                {[
+                  { n: 1, label: 'Profile' },
+                  { n: 2, label: 'Credentials' },
+                  { n: 3, label: 'Finalize' }
+                ].map((s) => (
+                  <div key={s.n} className="flex items-center gap-2">
+                    <div className={`flex items-center gap-3 px-6 py-2.5 rounded-xl transition-all duration-300 ${
+                      s.n === step 
+                        ? 'bg-orange-600 text-white shadow-xl shadow-orange-600/30 ring-2 ring-orange-500/20' 
+                        : 'opacity-30'
+                    }`}>
+                      <span className="text-[10px] font-black uppercase tracking-[0.25em]">{s.label}</span>
+                      {s.n < 3 && <ChevronRight size={14} className="opacity-40" />}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              <button className={`p-4 rounded-2xl transition-all active:scale-90 border ${
+                isDark ? 'bg-blue-600/10 border-white/5 text-blue-500 hover:bg-blue-600/20' : 'bg-[#002366] text-white shadow-lg'
+              }`}>
+                <HelpCircle size={22} />
+              </button>
             </div>
-            
-            <button className={`p-3 rounded-2xl text-white shadow-lg active:scale-95 transition-all bg-[#002366] ${isDark ? 'hover:bg-blue-900' : 'hover:bg-blue-800'}`}>
-              <HelpCircle size={24} />
-            </button>
           </div>
 
-          <div className="p-6 md:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12">
+          <div className="p-10 md:p-16 grid grid-cols-1 lg:grid-cols-12 gap-16">
             
-            {/* Left Side: Generation */}
-            <div className="lg:col-span-7 space-y-8 md:space-y-10">
-              <div className="space-y-4">
-                <h3 className={`text-[10px] font-black tracking-widest uppercase opacity-80 ${isDark ? 'text-white' : 'text-[#002366]'}`}>
-                  Credential Generation
+            {/* Left Side: Parameters and Controls */}
+            <div className="lg:col-span-7 space-y-12">
+              <div className="space-y-6">
+                <h3 className={`text-[10px] font-black uppercase tracking-[0.4em] opacity-40 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                  Site Mapping Parameters
                 </h3>
                 
-                {/* Info Bar */}
-                <div className={`grid grid-cols-1 sm:grid-cols-3 gap-4 p-6 rounded-[2rem] border shadow-inner ${isDark ? 'bg-white/5 border-white/5' : 'bg-blue-50 border-blue-100'}`}>
-                  <div>
-                    <p className={`text-[9px] font-black opacity-40 uppercase mb-1 ${isDark ? 'text-white' : 'text-[#002366]'}`}>Full Name:</p>
-                    <p className={`text-sm font-black ${isDark ? 'text-white' : 'text-[#002366]'}`}>Rajesh Kumar</p>
+                <div className={`grid grid-cols-1 sm:grid-cols-3 gap-8 p-8 rounded-3xl border transition-colors ${
+                  isDark ? 'bg-white/5 border-white/5 shadow-inner' : 'bg-slate-50 border-slate-100'
+                }`}>
+                  <div className="space-y-1.5">
+                    <p className="text-[9px] font-black opacity-30 uppercase tracking-widest">Staff Node</p>
+                    <p className={`text-sm font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>Rajesh Kumar</p>
                   </div>
-                  <div>
-                    <p className={`text-[9px] font-black opacity-40 uppercase mb-1 ${isDark ? 'text-white' : 'text-[#002366]'}`}>Role:</p>
-                    <p className="text-sm font-black text-blue-500">Site Supervisor</p>
+                  <div className="space-y-1.5">
+                    <p className="text-[9px] font-black opacity-30 uppercase tracking-widest">Deployment Role</p>
+                    <p className="text-sm font-black text-orange-600">Site Supervisor</p>
                   </div>
-                  <div>
-                    <p className={`text-[9px] font-black opacity-40 uppercase mb-1 ${isDark ? 'text-white' : 'text-[#002366]'}`}>Employee ID:</p>
-                    <p className={`text-sm font-black ${isDark ? 'text-white' : 'text-[#002366]'}`}>EMP-2026-045</p>
+                  <div className="space-y-1.5">
+                    <p className="text-[9px] font-black opacity-30 uppercase tracking-widest">Operational ID</p>
+                    <p className={`text-sm font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>EMP-2026-045</p>
                   </div>
                 </div>
               </div>
 
-              {/* Username Input */}
-              <div className="space-y-3">
-                <label className={`text-[9px] font-black uppercase opacity-60 ml-1 tracking-widest ${isDark ? 'text-white' : 'text-[#002366]'}`}>Username</label>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <div className={`flex-1 relative h-14 md:h-16 flex items-center px-6 rounded-2xl border transition-all shadow-inner ${
-                    isDark ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-gray-200'
-                  }`}>
-                    <input 
-                      value={username}
-                      onChange={e => setUsername(e.target.value)}
-                      className={`bg-transparent border-none outline-none text-sm font-black w-full ${isDark ? 'text-white' : 'text-[#002366]'}`}
-                    />
-                  </div>
-                  <button className="px-8 h-14 md:h-16 bg-[#FF8C00] text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-lg shadow-orange-500/20 active:scale-95 transition-all flex items-center justify-center gap-2">
-                    <RefreshCw size={16} /> Regenerate
-                  </button>
-                </div>
-              </div>
-
-              {/* Password Section */}
-              <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                   <label className={`text-[9px] font-black uppercase opacity-60 ml-1 tracking-widest ${isDark ? 'text-white' : 'text-[#002366]'}`}>Password</label>
-                   <p className={`text-[9px] font-black uppercase opacity-40 ${isDark ? 'text-white' : 'text-[#002366]'}`}>Temporary Password</p>
-                </div>
-                
+              <div className="space-y-8">
                 <div className="space-y-4">
-                  <div className={`relative h-14 md:h-16 flex items-center px-6 rounded-2xl border transition-all shadow-inner ${
-                    isDark ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-gray-200'
-                  }`}>
-                    <input 
-                      type={showPassword ? 'text' : 'password'}
-                      value={password}
-                      onChange={e => setPassword(e.target.value)}
-                      className={`bg-transparent border-none outline-none text-sm font-black w-full ${isDark ? 'text-white' : 'text-[#002366]'}`}
-                    />
-                    <button onClick={() => setShowPassword(!showPassword)} className="opacity-40 hover:opacity-100 flex items-center gap-2">
-                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                      <span className={`text-[9px] font-black uppercase tracking-widest ${isDark ? 'text-white' : 'text-[#002366]'}`}>Show</span>
+                  <label className="text-[10px] font-black uppercase opacity-40 ml-2 tracking-widest">Access Username</label>
+                  <div className="flex gap-4">
+                    <div className={`flex-1 relative h-14 flex items-center px-6 rounded-2xl border transition-all duration-300 ${
+                      isDark ? 'bg-slate-800/40 border-white/10 focus-within:border-orange-500/50 focus-within:bg-slate-800/60' : 'bg-white border-slate-200 focus-within:border-orange-500/50 shadow-sm'
+                    }`}>
+                      <input 
+                        value={username}
+                        onChange={e => setUsername(e.target.value)}
+                        className={`bg-transparent border-none outline-none text-base font-bold w-full ${isDark ? 'text-white' : 'text-[#002366]'}`}
+                        spellCheck={false}
+                      />
+                    </div>
+                    <button 
+                      onClick={handleRefreshUsername}
+                      className="px-6 h-14 bg-orange-600 hover:bg-orange-500 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl shadow-orange-600/30 active:scale-95 transition-all flex items-center gap-3"
+                    >
+                      <RefreshCw size={18} /> Refresh
                     </button>
                   </div>
-                  
-                  <button className="w-full h-14 md:h-16 bg-[#002366] text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl flex items-center justify-center gap-3 active:scale-[0.98] transition-all hover:bg-blue-800">
-                    <Key size={18} /> Generate Secure Password
-                  </button>
                 </div>
-              </div>
 
-              {/* Options */}
-              <div className="space-y-4 pt-4">
-                <div className="flex items-center gap-3 group cursor-pointer">
-                  <div className="w-6 h-6 rounded-lg border-2 border-orange-500 bg-orange-500/10 flex items-center justify-center">
-                    <CheckCircle2 size={16} className="text-orange-500" />
+                <div className="space-y-4">
+                  <label className="text-[10px] font-black uppercase opacity-40 ml-2 tracking-widest">Master KeyToken</label>
+                  <div className="space-y-5">
+                    <div className={`relative h-14 flex items-center px-6 rounded-2xl border transition-all duration-300 ${
+                      isDark ? 'bg-slate-800/40 border-white/10 focus-within:border-orange-500/50 focus-within:bg-slate-800/60' : 'bg-white border-slate-200 focus-within:border-orange-500/50 shadow-sm'
+                    }`}>
+                      <input 
+                        type={showPassword ? 'text' : 'password'}
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                        className={`bg-transparent border-none outline-none text-base font-bold w-full ${isDark ? 'text-white' : 'text-[#002366]'}`}
+                        spellCheck={false}
+                      />
+                      <button 
+                        onClick={() => setShowPassword(!showPassword)} 
+                        className="p-2 opacity-30 hover:opacity-100 transition-opacity"
+                      >
+                        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </button>
+                    </div>
+                    <button 
+                      onClick={handleRotateEncryption}
+                      className={`w-full h-14 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl flex items-center justify-center gap-3 active:scale-95 transition-all ${
+                        isDark ? 'bg-blue-600/10 border border-white/5 text-blue-500 hover:bg-blue-600/20' : 'bg-[#002366] text-white'
+                      }`}
+                    >
+                      <Key size={18} /> Rotate Encryption
+                    </button>
                   </div>
-                  <span className={`text-sm font-bold ${isDark ? 'text-white/80' : 'text-gray-700'}`}>User must change password on first login</span>
-                </div>
-                <div className="flex items-center gap-3 group cursor-pointer opacity-50">
-                  <div className={`w-6 h-6 rounded-lg border-2 ${isDark ? 'border-white/20' : 'border-gray-300'}`}></div>
-                  <span className={`text-sm font-bold ${isDark ? 'text-white/80' : 'text-gray-700'}`}>Send credentials via Email & SMS</span>
                 </div>
               </div>
 
-              {/* Contact Preview */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-6">
-                 <div className="space-y-2">
-                    <p className={`text-[9px] font-black uppercase opacity-40 ml-1 ${isDark ? 'text-white' : 'text-[#002366]'}`}>Email Address</p>
-                    <div className={`h-14 flex items-center px-5 rounded-2xl border shadow-inner ${isDark ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-gray-100 opacity-60'}`}>
-                      <span className={`text-sm font-bold opacity-70 ${isDark ? 'text-white' : 'text-[#002366]'}`}>rajesh.kumar@email.com</span>
-                    </div>
-                 </div>
-                 <div className="space-y-2">
-                    <p className={`text-[9px] font-black uppercase opacity-40 ml-1 ${isDark ? 'text-white' : 'text-[#002366]'}`}>Phone Number</p>
-                    <div className={`h-14 flex items-center px-5 rounded-2xl border shadow-inner ${isDark ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-gray-100 opacity-60'}`}>
-                      <span className={`text-sm font-bold opacity-70 ${isDark ? 'text-white' : 'text-[#002366]'}`}>+91 98765 43210</span>
-                    </div>
-                 </div>
+              <div className="pt-8 border-t border-inherit">
+                <div className="flex items-center gap-4 group cursor-pointer w-fit">
+                  <div className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all ${
+                    isDark ? 'border-orange-600 bg-orange-600/20' : 'border-orange-500 bg-orange-50'
+                  }`}>
+                    <CheckCircle2 size={16} className="text-orange-600" />
+                  </div>
+                  <span className={`text-xs font-black tracking-tight opacity-70 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                    Mandatory reset on first deployment uplink
+                  </span>
+                </div>
               </div>
             </div>
 
-            {/* Right Side: Summary */}
-            <div className="lg:col-span-5 flex flex-col gap-8 md:gap-10">
-              <div className="space-y-4">
-                <h3 className={`text-[10px] font-black tracking-widest uppercase opacity-80 ${isDark ? 'text-white' : 'text-[#002366]'}`}>
-                  Credential Summary & Actions
+            {/* Right Side: Deployment Dossier Card */}
+            <div className="lg:col-span-5 flex flex-col justify-between">
+              <div className="space-y-6">
+                <h3 className={`text-[10px] font-black uppercase tracking-[0.4em] opacity-40 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                  Deployment Dossier
                 </h3>
                 
-                {/* Summary Card */}
-                <div className="relative group">
-                  <div className="absolute -inset-1 bg-gradient-to-r from-orange-500 to-orange-300 rounded-[2.5rem] blur opacity-20 group-hover:opacity-40 transition-all duration-500"></div>
-                  <div className={`relative p-6 md:p-8 rounded-[2.5rem] border overflow-hidden shadow-2xl ${
-                    isDark ? 'bg-[#1e2d3d] border-white/10' : 'bg-orange-500 border-orange-400'
+                <div className="relative group overflow-hidden rounded-[3rem] shadow-2xl transition-transform duration-700 hover:scale-[1.02]">
+                  {/* Glowing Animated Edge */}
+                  <div className="absolute -inset-1 bg-gradient-to-r from-orange-500 via-blue-500 to-emerald-500 rounded-[3rem] blur opacity-10 group-hover:opacity-30 animate-pulse transition-all duration-700"></div>
+                  
+                  <div className={`relative p-12 min-h-[440px] border overflow-hidden transition-all duration-500 ${
+                    isDark ? 'bg-[#0f172a] border-white/10' : 'bg-[#002366] border-blue-900'
                   }`}>
-                    <div className={`mb-8 px-6 py-3 rounded-full text-center text-[10px] font-black uppercase tracking-[0.2em] shadow-lg ${
-                      isDark ? 'bg-blue-600 text-white' : 'bg-[#002366] text-white'
+                    
+                    {/* Abstract Wireframe Backgrounds */}
+                    <div className="absolute -top-16 -right-16 opacity-[0.03] pointer-events-none group-hover:rotate-12 group-hover:scale-110 transition-transform duration-[3000ms]">
+                       <Globe size={400} className="text-white" strokeWidth={0.5} />
+                    </div>
+                    <div className="absolute -bottom-24 -left-24 opacity-[0.05] pointer-events-none">
+                       <MapPin size={280} className="text-white" strokeWidth={0.5} />
+                    </div>
+
+                    <div className={`mb-10 px-6 py-2.5 rounded-xl text-center text-[10px] font-black uppercase tracking-[0.3em] shadow-xl inline-block ${
+                      isDark ? 'bg-blue-600/20 text-blue-400 border border-blue-400/20' : 'bg-orange-600 text-white'
                     }`}>
-                      New Credentials Ready
+                      Node Finalized
                     </div>
                     
-                    <div className="space-y-8">
-                      <div>
-                        <p className={`text-[9px] font-black uppercase tracking-widest mb-1 ${isDark ? 'opacity-40' : 'text-white/60'}`}>Username:</p>
-                        <p className="text-2xl font-black text-white">{username}</p>
+                    <div className="space-y-10 relative z-10">
+                      <div className="space-y-2">
+                        <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 text-white">Operational Identifier</p>
+                        <p className="text-3xl font-black text-white tracking-tighter leading-none break-all">
+                          {username}
+                        </p>
                       </div>
                       
-                      <div>
-                        <p className={`text-[9px] font-black uppercase tracking-widest mb-1 ${isDark ? 'opacity-40' : 'text-white/60'}`}>Temporary Password:</p>
+                      <div className="space-y-2">
+                        <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 text-white">Site Assignment Status</p>
                         <div className="flex items-center gap-3">
-                          <p className="text-2xl font-black text-white">[Hidden]</p>
-                          <EyeOff size={20} className={isDark ? 'opacity-40' : 'text-white/60'} />
+                          <p className="text-xl font-black text-white/90">Awaiting Signal</p>
+                          <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_15px_#10b981]"></div>
                         </div>
                       </div>
                       
-                      <div className={`pt-6 border-t ${isDark ? 'border-white/5' : 'border-white/10'}`}>
-                         <p className={`text-[10px] font-black opacity-60 italic leading-relaxed text-white`}>
-                           Will be sent to: rajesh.kumar@email.com & +91 98765 43210
+                      <div className="pt-8 border-t border-white/10">
+                         <p className="text-xs font-bold text-white/40 leading-relaxed italic max-w-xs">
+                           Encryption keys synchronized with Global Node 01-A. Ready for real-time personnel provisioning.
                          </p>
                       </div>
                     </div>
@@ -198,28 +245,38 @@ const StaffCreation: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col gap-4 mt-auto">
-                <button className="w-full h-16 md:h-20 bg-[#FF8C00] text-white rounded-3xl font-black text-base md:text-lg uppercase tracking-widest shadow-2xl shadow-orange-500/40 flex items-center justify-center gap-4 active:scale-95 transition-all hover:bg-orange-600">
-                  <Send size={24} /> Create & Send Credentials
+              <div className="flex flex-col gap-4 mt-12">
+                <button 
+                  onClick={handleProvision}
+                  disabled={isProvisioning}
+                  className="w-full h-16 bg-orange-600 hover:bg-orange-500 text-white rounded-[2rem] font-black text-sm uppercase tracking-[0.25em] shadow-2xl shadow-orange-600/40 flex items-center justify-center gap-4 active:scale-[0.97] transition-all disabled:opacity-50"
+                >
+                  {isProvisioning ? (
+                    <Loader2 size={24} className="animate-spin" />
+                  ) : (
+                    <Send size={22} />
+                  )}
+                  {isProvisioning ? 'Encrypting Node...' : 'Provision Access'}
                 </button>
                 <button 
                   onClick={() => setActiveView(AppView.DASHBOARD)}
-                  className={`w-full h-14 md:h-16 rounded-2xl font-black text-[10px] md:text-xs uppercase tracking-widest border-2 transition-all active:scale-[0.98] ${
+                  className={`w-full h-16 rounded-[2rem] font-black text-[10px] uppercase tracking-[0.3em] border transition-all active:scale-[0.97] ${
                     isDark 
-                      ? 'border-white/10 text-white hover:bg-white/5' 
-                      : 'border-[#002366] text-[#002366] hover:bg-gray-50'
+                      ? 'border-white/5 bg-white/5 text-slate-500 hover:text-white hover:bg-white/10' 
+                      : 'border-blue-900/20 text-[#002366] hover:bg-slate-100 shadow-sm'
                   }`}
                 >
-                  Cancel
+                  Cancel Protocol
                 </button>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Footer info */}
-        <div className="text-center opacity-40">
-           <p className={`text-[9px] font-black uppercase tracking-[0.5em] ${isDark ? 'text-white' : 'text-[#002366]'}`}>Khushi Technology Security Protocol 4.2.1</p>
+        <div className="text-center opacity-20 pb-16">
+           <p className={`text-[10px] font-black uppercase tracking-[0.6em] ${isDark ? 'text-white' : 'text-[#002366]'}`}>
+             Security Module v1.0.4-S • Distributed Ops • Khushi Technology
+           </p>
         </div>
 
       </div>
