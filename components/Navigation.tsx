@@ -33,62 +33,62 @@ const Navigation: React.FC = () => {
     <>
       {/* Desktop Sidebar */}
       <aside className={`hidden md:flex flex-col w-64 lg:w-72 h-screen sticky top-0 transition-all duration-500 z-[60] ${isDark ? 'bg-[#0b141d] border-r border-white/5' : 'bg-white border-r border-slate-200'}`}>
-        <div className="p-10 pb-12 flex items-center space-x-5">
-          <div className="w-14 h-14 bg-[#FF8C00] rounded-2xl flex items-center justify-center shadow-2xl shadow-orange-500/30 transition-transform hover:rotate-6">
-            <ShieldCheck size={32} className="text-white" />
+        <div className="p-8 pb-10 flex items-center space-x-4">
+          <div className="w-11 h-11 bg-[#FF8C00] rounded-xl flex items-center justify-center shadow-xl shadow-orange-500/30 transition-transform hover:rotate-6">
+            <ShieldCheck size={24} className="text-white" />
           </div>
           <div>
-            <h1 className={`font-black text-2xl leading-none tracking-tighter ${isDark ? 'text-white' : 'text-[#002366]'}`}>KHUSHI</h1>
-            <p className="text-[9px] uppercase font-black opacity-30 tracking-[0.5em] mt-2 leading-none">Technology</p>
+            <h1 className={`font-black text-xl leading-none tracking-tighter ${isDark ? 'text-white' : 'text-[#002366]'}`}>KHUSHI</h1>
+            <p className="text-[8px] uppercase font-black opacity-30 tracking-[0.4em] mt-1.5 leading-none">Technology</p>
           </div>
         </div>
 
-        <div className="px-10 mb-8">
-           <p className="text-[10px] font-black uppercase tracking-[0.25em] opacity-40">
+        <div className="px-8 mb-6">
+           <p className="text-[9px] font-black uppercase tracking-[0.25em] opacity-40">
              {isAdmin ? t('superAdminPanel') : t('staffPanel')}
            </p>
         </div>
 
-        <nav className="flex-1 px-5 space-y-2 overflow-y-auto custom-scrollbar">
+        <nav className="flex-1 px-4 space-y-1.5 overflow-y-auto custom-scrollbar">
           {filteredMenuItems.map((item) => (
             <button
               key={item.id}
               onClick={() => setActiveView(item.id)}
-              className={`w-full flex items-center gap-5 px-6 py-5 rounded-[1.5rem] transition-all duration-300 group relative active:scale-95 ${
+              className={`w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 group relative active:scale-95 ${
                 activeView === item.id 
-                  ? 'bg-[#FF8C00] text-white shadow-2xl shadow-orange-500/20' 
+                  ? 'bg-[#FF8C00] text-white shadow-xl shadow-orange-500/20' 
                   : isDark ? 'text-slate-500 hover:text-white hover:bg-white/5' : 'text-slate-500 hover:text-[#002366] hover:bg-slate-50'
               }`}
             >
               <div className={`shrink-0 flex items-center justify-center transition-all duration-300 ${activeView === item.id ? 'scale-110' : 'group-hover:scale-110 opacity-50 group-hover:opacity-100'}`}>
-                {item.icon}
+                {React.cloneElement(item.icon as React.ReactElement<any>, { size: 18 })}
               </div>
-              <span className={`text-[11px] font-bold uppercase tracking-[0.15em] text-left leading-none pt-0.5 ${language === Language.HI ? 'hindi-font' : ''}`}>
+              <span className={`text-[10px] font-bold uppercase tracking-[0.15em] text-left leading-none pt-0.5 ${language === Language.HI ? 'hindi-font' : ''}`}>
                 {t(item.label)}
               </span>
               {activeView === item.id && (
-                <div className="absolute right-6 w-2 h-2 rounded-full bg-white/40"></div>
+                <div className="absolute right-5 w-1.5 h-1.5 rounded-full bg-white/40"></div>
               )}
             </button>
           ))}
         </nav>
 
-        <div className="p-10 border-t border-inherit space-y-8">
-          <div className={`p-3 rounded-2xl border flex items-center justify-between ${isDark ? 'bg-white/5 border-white/5' : 'bg-slate-50 border-slate-200 shadow-inner'}`}>
-             <button onClick={() => setTheme(isDark ? Theme.LIGHT : Theme.DARK)} className={`p-3 rounded-xl transition-all active:scale-90 ${isDark ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20' : 'bg-white text-orange-500 shadow-sm border border-slate-100'}`}>
-                {isDark ? <Sun size={16} /> : <Moon size={16} />}
+        <div className="p-8 border-t border-inherit space-y-6">
+          <div className={`p-2 rounded-xl border flex items-center justify-between ${isDark ? 'bg-white/5 border-white/5' : 'bg-slate-50 border-slate-200 shadow-inner'}`}>
+             <button onClick={() => setTheme(isDark ? Theme.LIGHT : Theme.DARK)} className={`p-2 rounded-lg transition-all active:scale-90 ${isDark ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20' : 'bg-white text-orange-500 shadow-sm border border-slate-100'}`}>
+                {isDark ? <Sun size={14} /> : <Moon size={14} />}
              </button>
-             <button onClick={() => setLanguage(language === Language.EN ? Language.HI : Language.EN)} className={`px-5 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-[0.2em] transition-all active:scale-90 ${isDark ? 'text-white/40 hover:text-white hover:bg-white/5' : 'text-slate-600 hover:bg-white shadow-sm'}`}>
+             <button onClick={() => setLanguage(language === Language.EN ? Language.HI : Language.EN)} className={`px-4 py-2 rounded-lg font-black text-[9px] uppercase tracking-[0.2em] transition-all active:scale-90 ${isDark ? 'text-white/40 hover:text-white hover:bg-white/5' : 'text-slate-600 hover:bg-white shadow-sm'}`}>
                 {language === Language.EN ? 'EN' : 'हिन्दी'}
              </button>
           </div>
-          <button onClick={handleLogout} className="w-full py-5 rounded-2xl font-black text-[11px] uppercase tracking-[0.25em] text-rose-500 hover:bg-rose-500/5 transition-all flex items-center justify-center gap-4 active:scale-95 group">
-            <LogOut size={18} className="group-hover:-translate-x-1 transition-transform" /> {t('terminateSession')}
+          <button onClick={handleLogout} className="w-full h-11 rounded-xl font-black text-[10px] uppercase tracking-[0.25em] text-rose-500 hover:bg-rose-500/5 transition-all flex items-center justify-center gap-3 active:scale-95 group border border-transparent hover:border-rose-500/10">
+            <LogOut size={16} className="group-hover:-translate-x-0.5 transition-transform" /> {t('terminateSession')}
           </button>
         </div>
       </aside>
 
-      {/* Premium Mobile Navigation - Fixed overlapping, size issues, and alignment */}
+      {/* Premium Mobile Navigation */}
       <nav className={`md:hidden fixed bottom-0 left-0 right-0 h-20 border-t flex items-center justify-around z-50 transition-all backdrop-blur-xl ${isDark ? 'bg-[#0b141d]/95 border-white/5' : 'bg-white/95 border-slate-200 shadow-[0_-10px_40px_rgba(0,0,0,0.05)]'}`}>
         <div className="flex items-center justify-around w-full max-w-lg mx-auto h-full px-2">
           {filteredMenuItems.map((item) => {
@@ -101,7 +101,7 @@ const Navigation: React.FC = () => {
               >
                 <div className={`transition-all duration-300 ${isActive ? 'scale-110 -translate-y-1' : ''}`}>
                   {React.cloneElement(item.icon as React.ReactElement<any>, { 
-                    size: isActive ? 22 : 20,
+                    size: isActive ? 20 : 18,
                     strokeWidth: isActive ? 2.5 : 2
                   })}
                 </div>

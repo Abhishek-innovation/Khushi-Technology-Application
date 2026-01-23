@@ -163,7 +163,7 @@ const StaffHome: React.FC = () => {
                     <button 
                       onClick={handleStartWork}
                       disabled={isLocating}
-                      className="w-full h-12 bg-[#002366] text-white rounded-xl font-bold text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] disabled:opacity-50"
+                      className="w-full h-11 bg-[#002366] text-white rounded-xl font-bold text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] disabled:opacity-50"
                     >
                       {isLocating ? <Loader2 size={16} className="animate-spin" /> : <Play size={16} fill="currentColor"/>}
                       {t('startWork')}
@@ -180,24 +180,22 @@ const StaffHome: React.FC = () => {
                       <div className="grid grid-cols-2 gap-3">
                         <button 
                           onClick={handleTakePhoto}
-                          className="h-14 bg-orange-500 text-white rounded-xl font-bold text-[10px] uppercase tracking-widest flex flex-col items-center justify-center shadow-lg active:scale-[0.98]"
+                          className="h-11 bg-orange-500 text-white rounded-xl font-bold text-[10px] uppercase tracking-widest flex flex-col items-center justify-center shadow-lg active:scale-[0.98]"
                         >
-                           <Camera size={18}/> 
-                           <span className="text-[8px] mt-1">{t('takePhoto')}</span>
+                           <span className="flex items-center gap-2"><Camera size={16}/> {t('takePhoto')}</span>
                         </button>
                         <button 
                           onClick={() => handleNavigate(task.location)}
-                          className="h-14 bg-blue-600 text-white rounded-xl font-bold text-[10px] uppercase tracking-widest flex flex-col items-center justify-center shadow-lg active:scale-[0.98]"
+                          className="h-11 bg-blue-600 text-white rounded-xl font-bold text-[10px] uppercase tracking-widest flex flex-col items-center justify-center shadow-lg active:scale-[0.98]"
                         >
-                           <NavIcon size={18}/>
-                           <span className="text-[8px] mt-1">Navigate</span>
+                           <span className="flex items-center gap-2"><NavIcon size={16}/> Navigate</span>
                         </button>
                       </div>
                       
                       <button 
                         onClick={() => handleMarkComplete(task.id)}
                         disabled={!!isSyncingTask}
-                        className="w-full h-14 bg-emerald-600 text-white rounded-xl font-bold text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] disabled:opacity-50"
+                        className="w-full h-11 bg-emerald-600 text-white rounded-xl font-bold text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] disabled:opacity-50"
                       >
                          {isSyncingTask === task.id ? <Loader2 size={18} className="animate-spin" /> : <CheckCircle size={18}/>}
                          {t('markComplete')}
@@ -230,7 +228,7 @@ const StaffHome: React.FC = () => {
            <p className="text-[10px] opacity-60 leading-relaxed font-medium mb-4">Syncing active. Local cache secured for offline persistence.</p>
            <button 
             onClick={() => setActiveView(AppView.COMMUNICATION)}
-            className="w-full h-12 border border-indigo-200 text-indigo-700 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-indigo-600 hover:text-white transition-all shadow-sm active:scale-95"
+            className="w-full h-11 border border-indigo-200 text-indigo-700 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-indigo-600 hover:text-white transition-all shadow-sm active:scale-95"
            >
               Request Help
            </button>
@@ -244,34 +242,34 @@ const StaffHome: React.FC = () => {
       {/* Task Details Modal */}
       {showDetails && (
         <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
-           <div className={`w-full max-w-lg rounded-t-[3rem] sm:rounded-[3rem] p-8 pb-12 sm:pb-8 border shadow-2xl transition-all ${isDark ? 'bg-[#16222c] border-white/10 text-white' : 'bg-white border-slate-200 text-[#002366]'}`}>
-              <div className="flex justify-between items-center mb-8">
+           <div className={`w-full max-w-lg rounded-t-[2.5rem] sm:rounded-[2.5rem] p-8 pb-10 sm:pb-8 border shadow-2xl transition-all ${isDark ? 'bg-[#16222c] border-white/10 text-white' : 'bg-white border-slate-200 text-[#002366]'}`}>
+              <div className="flex justify-between items-center mb-6">
                 <h3 className="text-xl font-black uppercase tracking-tight">Task Dossier</h3>
-                <button onClick={() => setShowDetails(null)} className="p-3 rounded-full hover:bg-slate-500/10 transition-colors"><X size={24} /></button>
+                <button onClick={() => setShowDetails(null)} className="p-2 rounded-full hover:bg-slate-500/10 transition-colors"><X size={20} /></button>
               </div>
-              <div className="space-y-8">
+              <div className="space-y-6">
                 <div>
-                  <label className="text-[10px] font-black uppercase opacity-40 tracking-widest block mb-2">Subject Node</label>
+                  <label className="text-[9px] font-black uppercase opacity-40 tracking-widest block mb-1.5">Subject Node</label>
                   <p className="text-lg font-black tracking-tight">{showDetails.title}</p>
                 </div>
                 <div>
-                  <label className="text-[10px] font-black uppercase opacity-40 tracking-widest block mb-2">Project Uplink</label>
+                  <label className="text-[9px] font-black uppercase opacity-40 tracking-widest block mb-1.5">Project Uplink</label>
                   <p className="text-sm font-bold opacity-80">{showDetails.projectName}</p>
                 </div>
                 <div>
-                  <label className="text-[10px] font-black uppercase opacity-40 tracking-widest block mb-2">Operational Instructions</label>
-                  <p className="text-[13px] leading-relaxed font-bold italic bg-slate-500/5 p-5 rounded-2xl border border-white/5">
+                  <label className="text-[9px] font-black uppercase opacity-40 tracking-widest block mb-1.5">Operational Instructions</label>
+                  <p className="text-[12px] leading-relaxed font-bold italic bg-slate-500/5 p-4 rounded-xl border border-white/5">
                     "{showDetails.instructions}"
                   </p>
                 </div>
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="text-[10px] font-black uppercase opacity-40 tracking-widest block mb-2">GPS Coordinate</label>
+                    <label className="text-[9px] font-black uppercase opacity-40 tracking-widest block mb-1.5">GPS Coordinate</label>
                     <p className="text-xs font-black truncate">{showDetails.location}</p>
                   </div>
                   <div>
-                    <label className="text-[10px] font-black uppercase opacity-40 tracking-widest block mb-2">Chronos Priority</label>
-                    <span className={`px-4 py-1.5 rounded-xl text-[10px] font-black tracking-widest inline-block ${showDetails.status === 'URGENT' ? 'bg-rose-500 text-white' : 'bg-orange-500 text-white'}`}>
+                    <label className="text-[9px] font-black uppercase opacity-40 tracking-widest block mb-1.5">Chronos Priority</label>
+                    <span className={`px-3 py-1 rounded-lg text-[9px] font-black tracking-widest inline-block ${showDetails.status === 'URGENT' ? 'bg-rose-500 text-white' : 'bg-orange-500 text-white'}`}>
                       {showDetails.status}
                     </span>
                   </div>
@@ -279,7 +277,7 @@ const StaffHome: React.FC = () => {
               </div>
               <button 
                 onClick={() => setShowDetails(null)}
-                className="w-full mt-10 h-14 bg-[#FF8C00] text-white rounded-2xl font-black uppercase text-xs tracking-[0.2em] shadow-xl shadow-orange-500/30 active:scale-95 transition-all"
+                className="w-full mt-8 h-12 bg-[#FF8C00] text-white rounded-xl font-black uppercase text-xs tracking-[0.2em] shadow-xl shadow-orange-500/30 active:scale-95 transition-all"
               >
                 Close Dossier
               </button>
